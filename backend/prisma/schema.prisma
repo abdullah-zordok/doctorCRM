@@ -20,15 +20,39 @@ enum AppointmentStatus {
   NO_SHOW
 }
 
+enum VisitStatus {
+  OPEN
+  COMPLETED
+  CANCELLED
+}
+
+enum PrescriptionStatus {
+  ACTIVE
+  VOIDED
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+  BANK_TRANSFER
+  OTHER
+}
+
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  name         String
-  passwordHash String
-  role         Role
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                           String                 @id @default(cuid())
+  email                        String                 @unique
+  name                         String
+  passwordHash                 String
+  role                         Role
+  isActive                     Boolean                @default(true)
+  createdAt                    DateTime               @default(now())
+  updatedAt                    DateTime               @updatedAt
+  doctorVisits                 Visit[]                @relation("VisitDoctor")
+  visitRevisionsChanged        VisitRevision[]        @relation("VisitRevisionChangedBy")
+  doctorPrescriptions          Prescription[]         @relation("PrescriptionDoctor")
+  prescriptionRevisionsChanged PrescriptionRevision[] @relation("PrescriptionRevisionChangedBy")
+  paymentsReceived             Payment[]              @relation("PaymentReceivedBy")
+  paymentRevisionsChanged      PaymentRevision[]      @relation("PaymentRevisionChangedBy")
 
   @@index([role])
   @@index([isActive])
@@ -44,6 +68,8 @@ model Clinic {
   updatedAt    DateTime      @updatedAt
   patients     Patient[]
   appointments Appointment[]
+  visits       Visit[]
+  payments     Payment[]
 
   @@index([isActive])
   @@index([name])
@@ -60,6 +86,8 @@ model Patient {
   updatedAt    DateTime      @updatedAt
   clinic       Clinic        @relation(fields: [clinicId], references: [id], onDelete: Restrict)
   appointments Appointment[]
+  visits       Visit[]
+  payments     Payment[]
 
   @@index([clinicId])
   @@index([isActive])
@@ -83,4 +111,123 @@ model Appointment {
   @@index([clinicId])
   @@index([scheduledAt])
   @@index([status])
+}
+
+model Visit {
+  id            String          @id @default(cuid())
+  patientId     String
+  clinicId      String
+  doctorId      String
+  visitDate     DateTime
+  diagnosis     String
+  treatment     String
+  status        VisitStatus     @default(OPEN)
+  notes         String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  patient       Patient         @relation(fields: [patientId], references: [id], onDelete: Restrict)
+  clinic        Clinic          @relation(fields: [clinicId], references: [id], onDelete: Restrict)
+  doctor        User            @relation("VisitDoctor", fields: [doctorId], references: [id], onDelete: Restrict)
+  revisions     VisitRevision[]
+  prescriptions Prescription[]
+  payments      Payment[]
+
+  @@index([patientId])
+  @@index([clinicId])
+  @@index([doctorId])
+  @@index([visitDate])
+  @@index([status])
+}
+
+model VisitRevision {
+  id              String   @id @default(cuid())
+  visitId         String
+  changedByUserId String
+  diagnosis       String
+  treatment       String
+  notes           String?
+  reason          String
+  createdAt       DateTime @default(now())
+  visit           Visit    @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  changedByUser   User     @relation("VisitRevisionChangedBy", fields: [changedByUserId], references: [id], onDelete: Restrict)
+
+  @@index([visitId])
+  @@index([changedByUserId])
+}
+
+model Prescription {
+  id           String                 @id @default(cuid())
+  visitId      String
+  doctorId     String
+  medications  Json
+  instructions String
+  status       PrescriptionStatus     @default(ACTIVE)
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+  visit        Visit                  @relation(fields: [visitId], references: [id], onDelete: Restrict)
+  doctor       User                   @relation("PrescriptionDoctor", fields: [doctorId], references: [id], onDelete: Restrict)
+  revisions    PrescriptionRevision[]
+
+  @@index([visitId])
+  @@index([doctorId])
+  @@index([status])
+}
+
+model PrescriptionRevision {
+  id              String       @id @default(cuid())
+  prescriptionId  String
+  changedByUserId String
+  medications     Json
+  instructions    String
+  reason          String
+  createdAt       DateTime     @default(now())
+  prescription    Prescription @relation(fields: [prescriptionId], references: [id], onDelete: Cascade)
+  changedByUser   User         @relation("PrescriptionRevisionChangedBy", fields: [changedByUserId], references: [id], onDelete: Restrict)
+
+  @@index([prescriptionId])
+  @@index([changedByUserId])
+}
+
+model Payment {
+  id               String            @id @default(cuid())
+  patientId        String
+  visitId          String?
+  clinicId         String
+  receivedByUserId String
+  totalAmount      Decimal           @db.Decimal(12, 2)
+  paidAmount       Decimal           @db.Decimal(12, 2)
+  remainingAmount  Decimal           @db.Decimal(12, 2)
+  method           PaymentMethod
+  paidAt           DateTime
+  notes            String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  patient          Patient           @relation(fields: [patientId], references: [id], onDelete: Restrict)
+  visit            Visit?            @relation(fields: [visitId], references: [id], onDelete: SetNull)
+  clinic           Clinic            @relation(fields: [clinicId], references: [id], onDelete: Restrict)
+  receivedByUser   User              @relation("PaymentReceivedBy", fields: [receivedByUserId], references: [id], onDelete: Restrict)
+  revisions        PaymentRevision[]
+
+  @@index([patientId])
+  @@index([visitId])
+  @@index([clinicId])
+  @@index([receivedByUserId])
+  @@index([paidAt])
+}
+
+model PaymentRevision {
+  id              String        @id @default(cuid())
+  paymentId       String
+  changedByUserId String
+  totalAmount     Decimal       @db.Decimal(12, 2)
+  paidAmount      Decimal       @db.Decimal(12, 2)
+  remainingAmount Decimal       @db.Decimal(12, 2)
+  method          PaymentMethod
+  reason          String
+  createdAt       DateTime      @default(now())
+  payment         Payment       @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  changedByUser   User          @relation("PaymentRevisionChangedBy", fields: [changedByUserId], references: [id], onDelete: Restrict)
+
+  @@index([paymentId])
+  @@index([changedByUserId])
 }

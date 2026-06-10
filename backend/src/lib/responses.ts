@@ -1,7 +1,9 @@
+import { Prisma } from "@prisma/client";
 import type { Response } from "express";
 import type { PaginationMeta } from "./pagination";
 
 export type ErrorDetail = Record<string, unknown>;
+export type DecimalString = string;
 
 export type PaginatedData<T> = {
   items: T[];
@@ -41,4 +43,8 @@ export function sendError(res: Response, statusCode: number, message: string, er
     message,
     errors
   });
+}
+
+export function toDecimalString(value: Prisma.Decimal | number | string): DecimalString {
+  return new Prisma.Decimal(value).toFixed(2);
 }

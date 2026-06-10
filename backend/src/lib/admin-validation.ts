@@ -8,6 +8,15 @@ const emptyToUndefined = (value: unknown) => {
   return value;
 };
 
+export const dateRangeQuerySchema = z.object({
+  from: z.preprocess(emptyToUndefined, z.string().trim().optional()),
+  to: z.preprocess(emptyToUndefined, z.string().trim().optional())
+});
+
+export function optionalEnum<T extends [string, ...string[]]>(values: T) {
+  return z.preprocess(emptyToUndefined, z.enum(values).optional());
+}
+
 export const idParamSchema = z.object({
   id: z.string().trim().min(1, "Id is required")
 });
