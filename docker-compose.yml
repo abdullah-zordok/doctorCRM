@@ -1,0 +1,49 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: doctor_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: doctor_user
+      POSTGRES_PASSWORD: doctor_password
+      POSTGRES_DB: doctor_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U doctor_user -d doctor_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+    container_name: doctor_backend
+    restart: unless-stopped
+    env_file:
+      - path: ./backend/.env
+        required: false
+    environment:
+      PORT: "4000"
+      NODE_ENV: development
+      DATABASE_URL: postgresql://doctor_user:doctor_password@postgres:5432/doctor_db
+      JWT_SECRET: change_me_in_production
+      JWT_EXPIRES_IN: 7d
+      SEED_DOCTOR_EMAIL: doctor@example.com
+      SEED_DOCTOR_PASSWORD: ChangeMe123!
+      SEED_DOCTOR_NAME: Clinic Doctor
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend:/app
+      - backend_node_modules:/app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: pnpm dev
+
+volumes:
+  postgres_data:
+  backend_node_modules:

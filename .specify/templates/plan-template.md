@@ -18,17 +18,17 @@
   the iteration process.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]
+**Language/Version**: TypeScript on Node.js [version or NEEDS CLARIFICATION]
 
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]
+**Primary Dependencies**: Express.js, Prisma ORM, JWT, Docker Compose
 
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]
+**Storage**: PostgreSQL via Prisma migrations
 
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]
+**Testing**: [Node.js test framework and coverage expectations or NEEDS CLARIFICATION]
 
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+**Target Platform**: Docker Compose local/runtime environment
 
-**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]
+**Project Type**: Backend REST API service
 
 **Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]
 
@@ -40,7 +40,19 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- Backend-first scope: API behavior, data model, auth/RBAC, and operational
+  behavior are defined before any UI work.
+- Approved stack: Node.js, TypeScript, Express.js, PostgreSQL, Prisma ORM, JWT,
+  Docker, and Docker Compose are used without substitution.
+- Modular architecture: domain modules are identified; controllers stay thin;
+  business logic belongs in services.
+- Security and validation: every protected endpoint has Doctor/Secretary RBAC,
+  request validation, input sanitization, and consistent JSON errors.
+- Historical integrity: medical, prescription, payment, and financial changes
+  preserve history instead of overwriting records.
+- Prescription output: PDFs are generated from stored prescription data.
+- Extensibility: data and module boundaries do not block future SaaS support or
+  multiple doctors.
 
 ## Project Structure
 
@@ -65,6 +77,27 @@ specs/[###-feature]/
 -->
 
 ```text
+# Required backend-first structure for this project:
+backend/
+├── src/
+│   ├── modules/
+│   │   └── [domain]/
+│   │       ├── [domain].controller.ts
+│   │       ├── [domain].service.ts
+│   │       ├── [domain].routes.ts
+│   │       └── [domain].validation.ts
+│   ├── middleware/
+│   ├── lib/
+│   └── app.ts
+├── prisma/
+└── tests/
+    ├── contract/
+    ├── integration/
+    └── unit/
+
+docker-compose.yml
+
+# Remove any generic options below when generating a concrete plan.
 # [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
 src/
 ├── models/

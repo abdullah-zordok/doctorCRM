@@ -1,50 +1,76 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+Version change: template -> 1.0.0
+Modified principles:
+- Placeholder principles -> Backend-first, Dockerized, modular, secure clinic backend rules
+Added sections:
+- Technology and Data Rules
+- Development Workflow
+Removed sections:
+- None
+Templates requiring updates:
+- ✅ updated: .specify/templates/plan-template.md
+- ✅ updated: .specify/templates/spec-template.md
+- ✅ updated: .specify/templates/tasks-template.md
+- ✅ reviewed: .specify/templates/commands/*.md (directory not present)
+- ✅ reviewed: AGENTS.md and Doctor_Clinic_Backend_Blueprint .md
+Follow-up TODOs: None
+-->
+
+# Doctor Clinic Management System Backend Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Backend-First Architecture
+The system MUST be designed as a backend API first. Features MUST define API,
+data, authentication, and operational behavior before any user interface work.
+This keeps the clinic workflow reliable and reusable across future clients.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Approved Stack and Docker Runtime
+All implementation MUST use Node.js, TypeScript, Express.js, PostgreSQL, Prisma
+ORM, JWT authentication, and Docker. The complete project MUST run through
+Docker Compose, including application services, database, migrations, and local
+development dependencies.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Modular Service Architecture
+Code MUST be organized by scalable domain modules. Controllers MUST stay thin:
+HTTP parsing, auth context, validation handoff, and response mapping only.
+Business rules, persistence orchestration, and cross-module decisions MUST live
+inside services.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Secure Access and Input Discipline
+Every protected endpoint MUST enforce JWT authentication and role-based access
+control for Doctor and Secretary roles. Every request MUST be validated and
+sanitized before service execution, with consistent JSON success and error
+responses for all RESTful APIs.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Historical Integrity and Clinical Outputs
+Medical history, visits, prescriptions, payments, and financial records MUST NOT
+be overwritten when facts change; use append-only records, status changes, or
+versioned corrections. Prescription PDFs MUST be generated from stored
+prescription data so outputs remain reproducible.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Technology and Data Rules
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+Persistence MUST use PostgreSQL through Prisma models and migrations. Data
+models MUST preserve auditability and remain easy to extend for future SaaS
+support and multiple doctors without reworking core domains.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Plans and tasks MUST start from Docker, database, auth/RBAC, validation, module
+boundaries, and REST contracts. New features MUST include service-level logic,
+authorization checks, request validation, and tests for critical medical,
+financial, and security behavior. Maintainability, simplicity, security, and
+code quality take priority over delivery speed.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes conflicting specifications, plans, tasks, and
+runtime guidance. Amendments require updating this file, reviewing dependent
+templates, and recording a semantic version bump: MAJOR for incompatible
+principle changes, MINOR for new or expanded principles, PATCH for
+clarifications. Every feature plan MUST pass the Constitution Check before
+design and before implementation.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-06-10 | **Last Amended**: 2026-06-10

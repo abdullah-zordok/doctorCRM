@@ -103,6 +103,15 @@
 - **[Entity 1]**: [What it represents, key attributes without implementation]
 - **[Entity 2]**: [What it represents, relationships to other entities]
 
+### Constitution Alignment *(mandatory)*
+
+- **Backend API**: [REST endpoints and consistent JSON response behavior]
+- **Auth/RBAC**: [Doctor/Secretary access rules for protected operations]
+- **Validation/Sanitization**: [Request validation and input sanitization rules]
+- **Historical Integrity**: [Medical or financial records that must preserve history]
+- **Prescription PDFs**: [If applicable, stored data used to generate PDFs]
+- **SaaS Extensibility**: [Assumptions that keep future multiple-doctor support viable]
+
 ## Success Criteria *(mandatory)*
 
 <!--
