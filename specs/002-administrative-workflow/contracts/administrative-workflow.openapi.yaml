@@ -1,0 +1,675 @@
+openapi: 3.1.0
+info:
+  title: Doctor Clinic Administrative Workflow API
+  version: 0.1.0
+servers:
+  - url: http://localhost:4000
+security:
+  - bearerAuth: []
+paths:
+  /api/users/secretaries:
+    get:
+      summary: List secretary accounts
+      description: Doctor-only paginated secretary list.
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/Status'
+      responses:
+        '200':
+          $ref: '#/components/responses/SecretaryList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      summary: Create a secretary account
+      description: Doctor-only; always creates role SECRETARY.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSecretaryRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/SecretaryItem'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/users/secretaries/{id}:
+    get:
+      summary: Get a secretary account
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          $ref: '#/components/responses/SecretaryItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      summary: Update secretary administrative details
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSecretaryRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SecretaryItem'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/users/secretaries/{id}/status:
+    patch:
+      summary: Change secretary active status
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SecretaryItem'
+  /api/clinics:
+    get:
+      summary: List clinics
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/Status'
+      responses:
+        '200':
+          $ref: '#/components/responses/ClinicList'
+    post:
+      summary: Create clinic
+      description: Doctor-only.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClinicInput'
+      responses:
+        '201':
+          $ref: '#/components/responses/ClinicItem'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /api/clinics/{id}:
+    get:
+      summary: Get clinic
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          $ref: '#/components/responses/ClinicItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      summary: Update clinic
+      description: Doctor-only.
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClinicInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/ClinicItem'
+  /api/clinics/{id}/status:
+    patch:
+      summary: Change clinic active status
+      description: Doctor-only.
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ClinicItem'
+  /api/patients:
+    get:
+      summary: List and search patients
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: clinicId
+          in: query
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Status'
+      responses:
+        '200':
+          $ref: '#/components/responses/PatientList'
+    post:
+      summary: Create patient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientInput'
+      responses:
+        '201':
+          $ref: '#/components/responses/PatientItem'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /api/patients/{id}:
+    get:
+      summary: Get patient
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          $ref: '#/components/responses/PatientItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      summary: Update patient administrative details
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/PatientItem'
+  /api/patients/{id}/status:
+    patch:
+      summary: Change patient active status
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/PatientItem'
+  /api/appointments:
+    get:
+      summary: List appointments
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: clinicId
+          in: query
+          schema:
+            type: string
+        - name: patientId
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            $ref: '#/components/schemas/AppointmentStatus'
+      responses:
+        '200':
+          $ref: '#/components/responses/AppointmentList'
+    post:
+      summary: Create appointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentInput'
+      responses:
+        '201':
+          $ref: '#/components/responses/AppointmentItem'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /api/appointments/{id}:
+    get:
+      summary: Get appointment
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          $ref: '#/components/responses/AppointmentItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      summary: Update appointment administrative details
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/AppointmentItem'
+  /api/appointments/{id}/status:
+    patch:
+      summary: Change appointment status
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  $ref: '#/components/schemas/AppointmentStatus'
+      responses:
+        '200':
+          $ref: '#/components/responses/AppointmentItem'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    Page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PageSize:
+      name: pageSize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    Status:
+      name: isActive
+      in: query
+      schema:
+        type: boolean
+  schemas:
+    ApiError:
+      type: object
+      required: [success, message, errors]
+      properties:
+        success:
+          type: boolean
+          const: false
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+    PaginationMeta:
+      type: object
+      required: [page, pageSize, total, totalPages]
+      properties:
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+    StatusRequest:
+      type: object
+      required: [isActive]
+      properties:
+        isActive:
+          type: boolean
+    Secretary:
+      type: object
+      required: [id, email, name, role, isActive, createdAt, updatedAt]
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        role:
+          type: string
+          const: SECRETARY
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    CreateSecretaryRequest:
+      type: object
+      required: [email, name, password]
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        password:
+          type: string
+          minLength: 8
+    UpdateSecretaryRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        password:
+          type: string
+          minLength: 8
+    Clinic:
+      type: object
+      required: [id, name, isActive, createdAt, updatedAt]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ClinicInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+    Patient:
+      type: object
+      required: [id, name, phone, clinicId, isActive, createdAt, updatedAt]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        phone:
+          type: string
+        clinicId:
+          type: string
+        notes:
+          type: string
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    PatientInput:
+      type: object
+      required: [name, phone, clinicId]
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        clinicId:
+          type: string
+        notes:
+          type: string
+    AppointmentStatus:
+      type: string
+      enum: [SCHEDULED, COMPLETED, CANCELLED, NO_SHOW]
+    Appointment:
+      type: object
+      required: [id, patientId, clinicId, scheduledAt, status, createdAt, updatedAt]
+      properties:
+        id:
+          type: string
+        patientId:
+          type: string
+        clinicId:
+          type: string
+        scheduledAt:
+          type: string
+          format: date-time
+        status:
+          $ref: '#/components/schemas/AppointmentStatus'
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    AppointmentInput:
+      type: object
+      required: [patientId, clinicId, scheduledAt]
+      properties:
+        patientId:
+          type: string
+        clinicId:
+          type: string
+        scheduledAt:
+          type: string
+          format: date-time
+        status:
+          $ref: '#/components/schemas/AppointmentStatus'
+        notes:
+          type: string
+  responses:
+    BadRequest:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    Unauthorized:
+      description: Missing or invalid token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    Forbidden:
+      description: Role is not allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    SecretaryItem:
+      description: Secretary response
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [success, message, data]
+            properties:
+              success:
+                type: boolean
+                const: true
+              message:
+                type: string
+              data:
+                $ref: '#/components/schemas/Secretary'
+    SecretaryList:
+      description: Paginated secretary response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                const: true
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Secretary'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+    ClinicItem:
+      description: Clinic response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                const: true
+              message:
+                type: string
+              data:
+                $ref: '#/components/schemas/Clinic'
+    ClinicList:
+      description: Paginated clinic response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                const: true
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Clinic'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+    PatientItem:
+      description: Patient response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                const: true
+              message:
+                type: string
+              data:
+                $ref: '#/components/schemas/Patient'
+    PatientList:
+      description: Paginated patient response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                const: true
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Patient'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+    AppointmentItem:
+      description: Appointment response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                const: true
+              message:
+                type: string
+              data:
+                $ref: '#/components/schemas/Appointment'
+    AppointmentList:
+      description: Paginated appointment response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                const: true
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Appointment'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'

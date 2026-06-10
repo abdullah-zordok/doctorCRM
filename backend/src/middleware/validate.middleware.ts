@@ -1,10 +1,10 @@
 import type { NextFunction, Request, Response } from "express";
-import type { AnyZodObject, ZodTypeAny } from "zod";
+import type { ZodTypeAny } from "zod";
 
 type RequestSchemas = {
-  body?: AnyZodObject;
-  query?: AnyZodObject;
-  params?: AnyZodObject;
+  body?: ZodTypeAny;
+  query?: ZodTypeAny;
+  params?: ZodTypeAny;
 };
 
 function trimStrings(value: unknown): unknown {

@@ -1,6 +1,12 @@
 import type { Response } from "express";
+import type { PaginationMeta } from "./pagination";
 
 export type ErrorDetail = Record<string, unknown>;
+
+export type PaginatedData<T> = {
+  items: T[];
+  meta: PaginationMeta;
+};
 
 export class AppError extends Error {
   readonly statusCode: number;
@@ -15,6 +21,14 @@ export class AppError extends Error {
 
 export function sendSuccess<T>(res: Response, message: string, data: T) {
   return res.status(200).json({
+    success: true,
+    message,
+    data
+  });
+}
+
+export function sendCreated<T>(res: Response, message: string, data: T) {
+  return res.status(201).json({
     success: true,
     message,
     data
