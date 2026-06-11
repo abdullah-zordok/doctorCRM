@@ -1,6 +1,6 @@
-# Doctor Clinic Management System Backend
+# Doctor Clinic Management System
 
-Backend-first foundation for the Doctor Clinic Management System.
+Backend and frontend foundation for the Doctor Clinic Management System.
 
 ## Spec 001: Core Backend Foundation
 
@@ -25,6 +25,17 @@ pnpm build
 pnpm lint
 ```
 
+Frontend SPEC 01 application shell:
+
+```bash
+cd frontend
+pnpm install
+pnpm dev
+pnpm typecheck
+pnpm build
+pnpm lint
+```
+
 Start the full local runtime:
 
 ```bash
@@ -38,6 +49,5 @@ docker compose exec backend pnpm prisma migrate dev
 docker compose exec backend pnpm prisma db seed
 ```
 
-Spec 001 intentionally excludes patients, clinics, appointments, visits,
-prescriptions, payments, dashboards, notifications, file uploads, and frontend
-work.
+The frontend app runs on <http://localhost:5173> and expects the backend API on
+<http://localhost:4000/api> by default.
