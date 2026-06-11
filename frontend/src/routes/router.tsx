@@ -1,14 +1,20 @@
 /* eslint-disable react-refresh/only-export-components */
 import * as React from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { PageSkeleton } from "@/components/ui/skeleton";
 import { PublicOnlyRoute, ProtectedRoute, RootRedirect } from "@/features/auth/auth-routes";
 import { LoginPage } from "@/features/auth/login-page";
 import { AppShell } from "@/layout/app-shell";
 import { ErrorPage } from "@/routes/error-page";
+import { workflowRoutes } from "@/routes/workflow-routes";
 
-const DoctorHomePage = React.lazy(() => import("@/routes/shell-pages").then((module) => ({ default: module.DoctorHomePage })));
-const SecretaryHomePage = React.lazy(() => import("@/routes/shell-pages").then((module) => ({ default: module.SecretaryHomePage })));
+const DoctorDashboardPage = React.lazy(() => import("@/features/dashboards/doctor-dashboard-page").then((module) => ({ default: module.DoctorDashboardPage })));
+const SecretaryDashboardPage = React.lazy(() => import("@/features/dashboards/secretary-dashboard-page").then((module) => ({ default: module.SecretaryDashboardPage })));
+const PatientsListPage = React.lazy(() => import("@/features/patients/patients-list-page").then((module) => ({ default: module.PatientsListPage })));
+const PatientProfilePage = React.lazy(() => import("@/features/patients/patient-profile-page").then((module) => ({ default: module.PatientProfilePage })));
+const VisitWorkspacePage = React.lazy(() => import("@/features/visits/visit-workspace-page").then((module) => ({ default: module.VisitWorkspacePage })));
+const PrescriptionBuilderPage = React.lazy(() => import("@/features/prescriptions/prescription-builder-page").then((module) => ({ default: module.PrescriptionBuilderPage })));
+const AppointmentsPage = React.lazy(() => import("@/features/appointments/appointments-page").then((module) => ({ default: module.AppointmentsPage })));
 const PlaceholderPage = React.lazy(() => import("@/routes/shell-pages").then((module) => ({ default: module.PlaceholderPage })));
 
 function LazyPage({ children }: { children: React.ReactNode }) {
@@ -45,25 +51,33 @@ export const router = createBrowserRouter([
                 path: "/doctor",
                 element: (
                   <LazyPage>
-                    <DoctorHomePage />
+                    <DoctorDashboardPage />
                   </LazyPage>
                 )
               },
               {
                 path: "/visits",
+                element: <Navigate to={workflowRoutes.visitWorkspace("vis-001")} replace />
+              },
+              {
+                path: "/visits/:visitId",
                 element: (
                   <LazyPage>
-                    <PlaceholderPage title="Visits" description="Visit workspace routes are prepared for SPEC 02 implementation." />
+                    <VisitWorkspacePage />
+                  </LazyPage>
+                )
+              },
+              {
+                path: "/visits/:visitId/prescriptions/new",
+                element: (
+                  <LazyPage>
+                    <PrescriptionBuilderPage />
                   </LazyPage>
                 )
               },
               {
                 path: "/prescriptions",
-                element: (
-                  <LazyPage>
-                    <PlaceholderPage title="Prescriptions" description="Prescription builder routes are prepared for SPEC 02 implementation." />
-                  </LazyPage>
-                )
+                element: <Navigate to={workflowRoutes.prescriptionBuilder("vis-001")} replace />
               }
             ]
           },
@@ -74,7 +88,7 @@ export const router = createBrowserRouter([
                 path: "/secretary",
                 element: (
                   <LazyPage>
-                    <SecretaryHomePage />
+                    <SecretaryDashboardPage />
                   </LazyPage>
                 )
               }
@@ -84,7 +98,7 @@ export const router = createBrowserRouter([
             path: "/patients",
             element: (
               <LazyPage>
-                <PlaceholderPage title="Patients" description="Patient management routes are prepared for SPEC 02 implementation." />
+                <PatientsListPage />
               </LazyPage>
             )
           },
@@ -92,7 +106,7 @@ export const router = createBrowserRouter([
             path: "/patients/:patientId",
             element: (
               <LazyPage>
-                <PlaceholderPage title="Patient profile" description="Patient profile will be implemented in the clinic workflow specification." />
+                <PatientProfilePage />
               </LazyPage>
             )
           },
@@ -100,7 +114,7 @@ export const router = createBrowserRouter([
             path: "/appointments",
             element: (
               <LazyPage>
-                <PlaceholderPage title="Appointments" description="Appointment management routes are prepared for SPEC 02 implementation." />
+                <AppointmentsPage />
               </LazyPage>
             )
           },

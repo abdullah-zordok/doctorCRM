@@ -47,3 +47,20 @@
     @apply outline-none ring-offset-2 ring-offset-background focus-visible:ring-2 focus-visible:ring-ring;
   }
 }
+
+@media print {
+  body {
+    background: white;
+  }
+
+  header,
+  aside,
+  .no-print {
+    display: none !important;
+  }
+
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+}

@@ -1,9 +1,9 @@
 import { Activity, X } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/features/auth/auth-provider";
-import { getNavigationForRole } from "@/layout/navigation";
+import { getNavigationForRole, isNavigationItemActive } from "@/layout/navigation";
 import { cn } from "@/lib/utils";
 
 type SidebarProps = {
@@ -13,6 +13,7 @@ type SidebarProps = {
 
 export function Sidebar({ mobileOpen, onMobileOpenChange }: SidebarProps) {
   const { user } = useAuth();
+  const location = useLocation();
   const items = user ? getNavigationForRole(user.role) : [];
 
   const content = (
@@ -35,20 +36,18 @@ export function Sidebar({ mobileOpen, onMobileOpenChange }: SidebarProps) {
 
       <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-2">
         {items.map((item) => (
-          <NavLink
+          <Link
             key={`${item.path}-${item.label}`}
             to={item.path}
             onClick={() => onMobileOpenChange(false)}
-            className={({ isActive }) =>
-              cn(
-                "clinic-focus flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground",
-                isActive && "bg-secondary text-secondary-foreground"
-              )
-            }
+            className={cn(
+              "clinic-focus flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground",
+              isNavigationItemActive(item, location.pathname) && "bg-secondary text-secondary-foreground"
+            )}
           >
             <item.icon className="h-5 w-5" aria-hidden="true" />
             {item.label}
-          </NavLink>
+          </Link>
         ))}
       </nav>
 
@@ -58,7 +57,7 @@ export function Sidebar({ mobileOpen, onMobileOpenChange }: SidebarProps) {
             <p className="text-sm font-semibold text-secondary-foreground">SPEC 01</p>
             <Badge variant="secondary">Shell</Badge>
           </div>
-          <p className="mt-2 text-xs leading-5 text-secondary-foreground/80">Foundation only. Clinic workflow pages are prepared as placeholders for later specs.</p>
+          <p className="mt-2 text-xs leading-5 text-secondary-foreground/80">Clinic workflow pages are live for daily dashboard, patient, visit, prescription, and appointment work.</p>
         </div>
       </div>
     </div>
