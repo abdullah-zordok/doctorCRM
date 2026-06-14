@@ -28,19 +28,20 @@ export function ClinicalFormShell({
 }: ClinicalFormShellProps) {
   return (
     <Card className={cn("overflow-hidden", className)}>
-      <CardHeader>
+      <CardHeader className="border-b border-border/60 bg-muted/20">
+        <p className="clinic-kicker">Clinical entry</p>
         <CardTitle className="text-lg">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         {children}
-        <div className="flex flex-wrap items-center justify-end gap-3 border-t pt-5">
+        <div className="sticky bottom-0 flex flex-wrap items-center justify-end gap-3 border-t bg-card/95 pt-5 backdrop-blur">
           {secondaryLabel && onSecondary ? (
-            <Button type="button" variant="outline" onClick={onSecondary}>
+            <Button type="button" variant="outline" size="lg" onClick={onSecondary}>
               {secondaryLabel}
             </Button>
           ) : null}
-          <Button type="button" onClick={onPrimary} disabled={primaryDisabled}>
+          <Button type="button" size="lg" onClick={onPrimary} disabled={primaryDisabled}>
             {primaryLabel}
           </Button>
         </div>

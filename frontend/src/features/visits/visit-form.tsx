@@ -41,18 +41,31 @@ export function VisitForm({ defaultValues, onSave, onFinish, saving, finishing }
       onSecondary={handleSubmit(onSave)}
       primaryDisabled={saving || finishing}
     >
-      <div className="space-y-5">
-        <Field label="Chief complaint" error={formState.errors.chiefComplaint?.message}>
-          <Input {...register("chiefComplaint")} />
-        </Field>
-        <Field label="Diagnosis" error={formState.errors.diagnosis?.message}>
-          <Input {...register("diagnosis")} />
-        </Field>
+      <div className="space-y-6">
+        <div className="grid gap-4 rounded-2xl border bg-muted/20 p-4 sm:grid-cols-3">
+          <Field label="Blood pressure">
+            <Input placeholder="Not recorded" aria-label="Blood pressure reference" disabled />
+          </Field>
+          <Field label="Pulse">
+            <Input placeholder="Not recorded" aria-label="Pulse reference" disabled />
+          </Field>
+          <Field label="Temperature">
+            <Input placeholder="Not recorded" aria-label="Temperature reference" disabled />
+          </Field>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Field label="Chief complaint" error={formState.errors.chiefComplaint?.message}>
+            <Input {...register("chiefComplaint")} />
+          </Field>
+          <Field label="Diagnosis" error={formState.errors.diagnosis?.message}>
+            <Input {...register("diagnosis")} />
+          </Field>
+        </div>
         <Field label="Clinical notes" error={formState.errors.clinicalNotes?.message}>
-          <textarea className="clinic-focus min-h-32 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm" {...register("clinicalNotes")} />
+          <textarea className="clinic-focus min-h-36 w-full rounded-xl border border-input bg-background/90 px-3.5 py-3 text-sm shadow-sm" {...register("clinicalNotes")} />
         </Field>
         <Field label="Follow-up notes" error={formState.errors.followUpNotes?.message}>
-          <textarea className="clinic-focus min-h-24 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm" {...register("followUpNotes")} />
+          <textarea className="clinic-focus min-h-24 w-full rounded-xl border border-input bg-background/90 px-3.5 py-3 text-sm shadow-sm" {...register("followUpNotes")} />
         </Field>
       </div>
       <div className="flex justify-end gap-2" />

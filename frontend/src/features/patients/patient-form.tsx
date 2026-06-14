@@ -48,7 +48,11 @@ export function PatientForm({ defaultValues, onSubmit, submitLabel = "Save patie
   const isActive = watch("isActive");
 
   return (
-    <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+    <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <p className="clinic-kicker">Patient details</p>
+        <p className="mt-1 text-sm text-muted-foreground">Keep identity and contact details accurate for every clinic visit.</p>
+      </div>
       <div className="grid gap-4 md:grid-cols-2">
         <Field label="Patient name" error={formState.errors.name?.message}>
           <Input {...register("name")} placeholder="Patient name" />
@@ -70,32 +74,34 @@ export function PatientForm({ defaultValues, onSubmit, submitLabel = "Save patie
         </Field>
       </div>
 
-      <Field label="Address" error={formState.errors.address?.message}>
-        <Input {...register("address")} placeholder="Riyadh..." />
-      </Field>
-
-      <Field label="Notes" error={formState.errors.notes?.message}>
-        <textarea
-          className="clinic-focus min-h-24 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm"
-          {...register("notes")}
-          placeholder="Quick clinical or reception notes"
-        />
-      </Field>
-
-      <Field label="Active record" error={formState.errors.isActive?.message}>
-        <Select value={isActive} onValueChange={(value) => setValue("isActive", value as "true" | "false", { shouldValidate: true })}>
-          <SelectTrigger>
-            <SelectValue placeholder="Active status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="true">Active</SelectItem>
-            <SelectItem value="false">Inactive</SelectItem>
-          </SelectContent>
-        </Select>
-      </Field>
+      <div className="grid gap-4 rounded-2xl border bg-muted/20 p-4 md:grid-cols-2">
+        <Field label="Address" error={formState.errors.address?.message}>
+          <Input {...register("address")} placeholder="Riyadh..." />
+        </Field>
+        <Field label="Active record" error={formState.errors.isActive?.message}>
+          <Select value={isActive} onValueChange={(value) => setValue("isActive", value as "true" | "false", { shouldValidate: true })}>
+            <SelectTrigger>
+              <SelectValue placeholder="Active status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="true">Active</SelectItem>
+              <SelectItem value="false">Inactive</SelectItem>
+            </SelectContent>
+          </Select>
+        </Field>
+        <div className="md:col-span-2">
+          <Field label="Notes" error={formState.errors.notes?.message}>
+            <textarea
+              className="clinic-focus min-h-24 w-full rounded-xl border border-input bg-background/90 px-3.5 py-3 text-sm shadow-sm"
+              {...register("notes")}
+              placeholder="Quick clinical or reception notes"
+            />
+          </Field>
+        </div>
+      </div>
 
       <div className="flex justify-end">
-        <Button type="submit">{submitLabel}</Button>
+        <Button type="submit" size="lg">{submitLabel}</Button>
       </div>
     </form>
   );

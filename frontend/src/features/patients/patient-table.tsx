@@ -1,8 +1,7 @@
-import { ArrowRight, CalendarPlus, Pencil } from "lucide-react";
+import { ArrowRight, CalendarPlus, Pencil, UserRound } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
 import { Badge } from "@/components/ui/badge";
 import type { PatientSummaryRecord } from "@/types/workflow";
@@ -21,9 +20,14 @@ export function PatientTable({ data, isLoading, onEdit, onBook }: PatientTablePr
       accessorKey: "name",
       header: "Patient",
       cell: ({ row }) => (
-        <div>
-          <p className="font-semibold">{row.original.name}</p>
-          <p className="text-xs text-muted-foreground">{row.original.patientCode}</p>
+        <div className="flex items-center gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-secondary text-secondary-foreground">
+            <UserRound className="h-4 w-4" />
+          </span>
+          <div>
+            <p className="font-semibold">{row.original.name}</p>
+            <p className="text-xs text-muted-foreground">{row.original.patientCode}</p>
+          </div>
         </div>
       )
     },
@@ -47,7 +51,7 @@ export function PatientTable({ data, isLoading, onEdit, onBook }: PatientTablePr
       header: "Actions",
       cell: ({ row }) => (
         <div className="flex flex-wrap items-center gap-2">
-          <Button asChild size="sm" variant="outline">
+          <Button asChild size="sm" variant="soft">
             <Link to={workflowRoutes.patientProfile(row.original.id)}>
               Open
               <ArrowRight className="h-4 w-4" />
@@ -66,14 +70,5 @@ export function PatientTable({ data, isLoading, onEdit, onBook }: PatientTablePr
     }
   ];
 
-  return (
-    <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="text-base">Patients</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <DataTable columns={columns} data={data} isLoading={isLoading} emptyTitle="No patients found" emptyDescription="Try a different name, phone number, or patient code." />
-      </CardContent>
-    </Card>
-  );
+  return <DataTable columns={columns} data={data} isLoading={isLoading} emptyTitle="No patients found" emptyDescription="Try a different name, phone number, or patient code." />;
 }

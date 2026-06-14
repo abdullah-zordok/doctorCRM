@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Plus } from "lucide-react";
+import { CalendarDays, CalendarPlus, CheckCircle2, Clock3, XCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { SearchInput } from "@/components/ui/search-input";
 import { Pagination } from "@/components/ui/pagination";
 import { AppointmentForm, type AppointmentFormValues } from "@/features/appointments/appointment-form";
@@ -52,12 +52,12 @@ export function AppointmentsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <section className="rounded-lg border bg-card p-5 shadow-soft">
+    <div className="clinic-page">
+      <section className="clinic-page-header">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Appointment management</p>
-            <h1 className="mt-2 text-2xl font-semibold tracking-normal">Today's schedule with queue priority</h1>
+            <p className="clinic-kicker">Appointment management</p>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight">Today&apos;s schedule</h1>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">Waiting patients stay above completed items, while cancelled appointments remain visible but distinct.</p>
           </div>
           <Dialog
@@ -72,7 +72,7 @@ export function AppointmentsPage() {
           >
             <DialogTrigger asChild>
               <Button type="button">
-                <Plus className="h-4 w-4" />
+                <CalendarPlus className="h-4 w-4" />
                 Book appointment
               </Button>
             </DialogTrigger>
@@ -87,9 +87,28 @@ export function AppointmentsPage() {
         </div>
       </section>
 
-      <Card>
-        <CardHeader className="flex-row items-end justify-between gap-4 space-y-0">
-          <CardTitle className="text-base">Filter appointments</CardTitle>
+      <section className="grid gap-4 md:grid-cols-4">
+        {[
+          { label: "Today's total", value: data?.total ?? 0, icon: CalendarDays },
+          { label: "Waiting", value: data?.items.filter((item) => item.status === "waiting").length ?? 0, icon: Clock3 },
+          { label: "Completed", value: data?.items.filter((item) => item.status === "completed").length ?? 0, icon: CheckCircle2 },
+          { label: "Cancelled", value: data?.items.filter((item) => item.status === "cancelled").length ?? 0, icon: XCircle }
+        ].map((metric) => (
+          <Card key={metric.label}>
+            <CardHeader className="flex-row items-start justify-between space-y-0 pb-3">
+              <div><CardDescription>{metric.label}</CardDescription><CardTitle className="mt-2 text-3xl">{metric.value}</CardTitle></div>
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary text-secondary-foreground"><metric.icon className="h-4 w-4" /></span>
+            </CardHeader>
+          </Card>
+        ))}
+      </section>
+
+      <Card className="overflow-hidden">
+        <CardHeader className="gap-4 border-b border-border/60 bg-muted/20 xl:flex-row xl:items-end xl:justify-between xl:space-y-0">
+          <div>
+            <CardTitle className="text-base">Schedule filters</CardTitle>
+            <CardDescription className="mt-1">Keep waiting patients visible while reviewing every appointment state.</CardDescription>
+          </div>
           <div className="flex flex-wrap items-center gap-2">
             {(["all", "waiting", "scheduled", "completed", "cancelled"] as const).map((option) => (
               <Button key={option} type="button" variant={status === option ? "default" : "outline"} size="sm" onClick={() => { setStatus(option); setPage(1); }}>
@@ -98,7 +117,7 @@ export function AppointmentsPage() {
             ))}
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-5 sm:pt-6">
           <SearchInput value={search} onChange={(event) => { setSearch(event.target.value); setPage(1); }} placeholder="Search appointment, patient, or reason" aria-label="Search appointments" />
         </CardContent>
       </Card>

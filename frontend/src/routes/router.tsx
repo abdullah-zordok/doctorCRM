@@ -15,10 +15,21 @@ const PatientProfilePage = React.lazy(() => import("@/features/patients/patient-
 const VisitWorkspacePage = React.lazy(() => import("@/features/visits/visit-workspace-page").then((module) => ({ default: module.VisitWorkspacePage })));
 const PrescriptionBuilderPage = React.lazy(() => import("@/features/prescriptions/prescription-builder-page").then((module) => ({ default: module.PrescriptionBuilderPage })));
 const AppointmentsPage = React.lazy(() => import("@/features/appointments/appointments-page").then((module) => ({ default: module.AppointmentsPage })));
+const SettingsPage = React.lazy(() => import("@/features/settings/settings-page").then((module) => ({ default: module.SettingsPage })));
 const PlaceholderPage = React.lazy(() => import("@/routes/shell-pages").then((module) => ({ default: module.PlaceholderPage })));
 
 function LazyPage({ children }: { children: React.ReactNode }) {
-  return <React.Suspense fallback={<PageSkeleton />}>{children}</React.Suspense>;
+  return (
+    <React.Suspense
+      fallback={
+        <div className="rounded-3xl border bg-card/75 p-5 shadow-soft">
+          <PageSkeleton />
+        </div>
+      }
+    >
+      {children}
+    </React.Suspense>
+  );
 }
 
 export const router = createBrowserRouter([
@@ -130,7 +141,7 @@ export const router = createBrowserRouter([
             path: "/settings",
             element: (
               <LazyPage>
-                <PlaceholderPage title="Settings" description="Application settings shell is ready for future preference and clinic profile screens." />
+                <SettingsPage />
               </LazyPage>
             )
           }

@@ -9,7 +9,8 @@ export const dashboardQueryKeys = {
 export function useWorkflowDashboard(role: WorkflowRole) {
   return useQuery({
     queryKey: dashboardQueryKeys.dashboard(role),
-    queryFn: () => fetchDashboard(role)
+    queryFn: () => fetchDashboard(role),
+    staleTime: 30_000
   });
 }
 

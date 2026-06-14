@@ -15,14 +15,19 @@ type PatientContextPanelProps = {
 
 export function PatientContextPanel({ patient, visit, prescription }: PatientContextPanelProps) {
   return (
-    <Card>
-      <CardHeader>
+    <Card className="overflow-hidden">
+      <CardHeader className="border-b border-border/60 bg-muted/20">
         <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
+          <div className="flex items-center gap-3">
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary text-secondary-foreground">
+              <UserRound className="h-5 w-5" />
+            </span>
+            <div>
             <CardTitle className="text-base">{patient.name}</CardTitle>
             <CardDescription>
               {patient.patientCode} - {patient.clinic}
             </CardDescription>
+            </div>
           </div>
           <StatusChip status={visit.status} />
         </div>
@@ -36,10 +41,10 @@ export function PatientContextPanel({ patient, visit, prescription }: PatientCon
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <Button asChild variant="outline" size="sm">
+          <Button asChild variant="soft" size="sm">
             <Link to={workflowRoutes.patientProfile(patient.id)}>Open patient profile</Link>
           </Button>
-          <Button asChild variant="outline" size="sm">
+          <Button asChild variant="soft" size="sm">
             <Link to={workflowRoutes.prescriptionBuilder(visit.id)}>
               <FileText className="h-4 w-4" />
               Prescription builder
@@ -54,9 +59,9 @@ export function PatientContextPanel({ patient, visit, prescription }: PatientCon
 
 function InfoRow({ icon: Icon, label, value }: { icon: React.ComponentType<{ className?: string }>; label: string; value: string }) {
   return (
-    <div className="rounded-lg border p-3">
-      <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-muted-foreground">
-        <Icon className="h-4 w-4" />
+    <div className="rounded-2xl border bg-card p-3">
+      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.14em] text-muted-foreground">
+        <Icon className="h-4 w-4 text-primary" />
         {label}
       </div>
       <p className="mt-2 text-sm font-medium">{value}</p>

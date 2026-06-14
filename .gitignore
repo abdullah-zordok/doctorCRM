@@ -10,6 +10,8 @@ test-dist/
 .DS_Store
 Thumbs.db
 *.tmp
+_tmp_*
+**/_tmp_*
 *.swp
 .vscode/
 .idea/

@@ -5,21 +5,23 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "clinic-focus inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-semibold transition disabled:pointer-events-none disabled:opacity-50",
+  "clinic-focus inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold transition duration-200 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground shadow-soft hover:bg-primary/90",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        outline: "border border-border bg-background hover:bg-muted",
+        outline: "border border-border bg-background/80 hover:bg-muted",
         ghost: "hover:bg-muted",
+        subtle: "bg-muted/70 text-foreground hover:bg-muted",
+        soft: "bg-accent text-accent-foreground hover:bg-accent/80",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         link: "text-primary underline-offset-4 hover:underline"
       },
       size: {
         sm: "h-9 px-3",
         md: "h-10 px-4",
-        lg: "h-11 px-5",
+        lg: "h-12 px-5 text-base",
         icon: "h-10 w-10"
       }
     },

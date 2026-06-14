@@ -17,19 +17,19 @@ export function AppointmentTable({ data, onStatusChange, onEdit }: AppointmentTa
   const rows = sortAppointmentsByPriority(data);
 
   return (
-    <Card>
-      <CardHeader className="pb-3">
+    <Card className="overflow-hidden">
+      <CardHeader className="border-b border-border/60 bg-muted/20 pb-4">
         <CardTitle className="text-base">Today's appointments</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         {rows.map((appointment) => (
-          <div key={appointment.id} className="rounded-lg border p-4">
+          <div key={appointment.id} className={appointment.status === "waiting" ? "rounded-2xl border border-amber-200 bg-amber-50/55 p-4" : "rounded-2xl border p-4"}>
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
                   <h3 className="font-semibold">{appointment.patientName}</h3>
                   <StatusChip status={appointment.status} />
-                  <Badge variant={appointment.priority === "urgent" ? "warning" : "secondary"}>{appointment.priority}</Badge>
+                  <Badge variant={appointment.priority === "urgent" ? "warning" : "secondary"}>{appointment.priority} priority</Badge>
                 </div>
                 <p className="text-sm text-muted-foreground">{appointment.reason}</p>
                 <p className="text-xs text-muted-foreground">
@@ -42,11 +42,11 @@ export function AppointmentTable({ data, onStatusChange, onEdit }: AppointmentTa
                   <Pencil className="h-4 w-4" />
                   Edit
                 </Button>
-                <Button type="button" variant="outline" size="sm" onClick={() => onStatusChange(appointment, "waiting")}>
+                <Button type="button" variant="soft" size="sm" onClick={() => onStatusChange(appointment, "waiting")}>
                   <Clock3 className="h-4 w-4" />
                   Waiting
                 </Button>
-                <Button type="button" variant="outline" size="sm" onClick={() => onStatusChange(appointment, "completed")}>
+                <Button type="button" variant="soft" size="sm" onClick={() => onStatusChange(appointment, "completed")}>
                   <CalendarCheck2 className="h-4 w-4" />
                   Complete
                 </Button>

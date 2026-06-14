@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Plus, RefreshCcw } from "lucide-react";
+import { Filter, Plus, RefreshCcw, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -76,12 +76,12 @@ export function PatientsListPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <section className="rounded-lg border bg-card p-5 shadow-soft">
+    <div className="clinic-page">
+      <section className="clinic-page-header">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Patient workspace</p>
-            <h1 className="mt-2 text-2xl font-semibold tracking-normal">Search, open, and update patient records</h1>
+            <p className="clinic-kicker">Patient workspace</p>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight">Patient records</h1>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
               Search by name, phone, or patient code. Keep quick actions close and avoid long unstructured lists.
             </p>
@@ -110,16 +110,20 @@ export function PatientsListPage() {
         </div>
       </section>
 
-      <Card>
-        <CardHeader className="flex-row items-end justify-between gap-4 space-y-0">
+      <Card className="overflow-hidden">
+        <CardHeader className="gap-4 border-b border-border/60 bg-muted/20 xl:flex-row xl:items-end xl:justify-between xl:space-y-0">
           <div className="space-y-1">
-            <CardTitle className="text-base">Filter patients</CardTitle>
+            <div className="flex items-center gap-2">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary text-secondary-foreground"><Users className="h-4 w-4" /></span>
+              <CardTitle className="text-base">All patients</CardTitle>
+            </div>
             <CardDescription>Use the patient code, phone, or name to locate the right record quickly.</CardDescription>
           </div>
           <div className="grid gap-3 md:grid-cols-[minmax(16rem,24rem)_12rem]">
             <SearchInput value={search} onChange={(event) => { setSearch(event.target.value); setPage(1); }} placeholder="Search name, phone, or code" aria-label="Search patients" />
             <Select value={sortBy} onValueChange={(value) => setSortBy(value as "name" | "recent" | "code")}>
               <SelectTrigger>
+                <Filter className="h-4 w-4" />
                 <SelectValue placeholder="Sort" />
               </SelectTrigger>
               <SelectContent>
@@ -130,7 +134,7 @@ export function PatientsListPage() {
             </Select>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-5 sm:pt-6">
           {isLoading ? <WorkflowSkeleton /> : isError ? <WorkflowErrorState title="Patients unavailable" description="The patient list could not be loaded." onRetry={() => void refetch()} /> : data ? data.items.length ? (
             <div className="space-y-4">
               <PatientTable data={data.items} isLoading={false} onEdit={setEditingPatient} onBook={handleBook} />

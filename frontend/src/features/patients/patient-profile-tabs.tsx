@@ -1,3 +1,4 @@
+import { CalendarDays, ClipboardList, CreditCard, FileText, HeartPulse, UserRound } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +12,7 @@ type PatientProfileTabsProps = {
 export function PatientProfileTabs({ patient }: PatientProfileTabsProps) {
   return (
     <Tabs defaultValue="basic">
-      <TabsList className="flex h-auto flex-wrap gap-2 bg-transparent p-0">
+      <TabsList className="flex h-auto w-full flex-wrap justify-start gap-2 rounded-2xl border bg-card p-2 shadow-sm">
         <TabsTrigger value="basic">Basic info</TabsTrigger>
         <TabsTrigger value="history">Medical history</TabsTrigger>
         <TabsTrigger value="visits">Visits</TabsTrigger>
@@ -27,13 +28,13 @@ export function PatientProfileTabs({ patient }: PatientProfileTabsProps) {
             <CardTitle className="text-base">Basic information</CardTitle>
             <CardDescription>Identity and contact details for clinic staff.</CardDescription>
           </CardHeader>
-          <CardContent className="grid gap-4 md:grid-cols-2">
-            <ProfileField label="Patient code" value={patient.patientCode} />
-            <ProfileField label="Phone" value={patient.phone} />
-            <ProfileField label="Clinic" value={patient.clinic} />
-            <ProfileField label="Date of birth" value={patient.dateOfBirth ?? "Not recorded"} />
-            <ProfileField label="Email" value={patient.email ?? "Not recorded"} />
-            <ProfileField label="Address" value={patient.address ?? "Not recorded"} />
+          <CardContent className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <ProfileField icon={UserRound} label="Patient code" value={patient.patientCode} />
+            <ProfileField icon={HeartPulse} label="Phone" value={patient.phone} />
+            <ProfileField icon={ClipboardList} label="Clinic" value={patient.clinic} />
+            <ProfileField icon={CalendarDays} label="Date of birth" value={patient.dateOfBirth ?? "Not recorded"} />
+            <ProfileField icon={FileText} label="Email" value={patient.email ?? "Not recorded"} />
+            <ProfileField icon={CreditCard} label="Address" value={patient.address ?? "Not recorded"} />
           </CardContent>
         </Card>
       </TabsContent>
@@ -46,7 +47,7 @@ export function PatientProfileTabs({ patient }: PatientProfileTabsProps) {
           <CardContent className="space-y-2">
             {patient.medicalHistory.length ? (
               patient.medicalHistory.map((item) => (
-                <div key={item} className="rounded-md border px-3 py-2 text-sm">
+                <div key={item} className="rounded-2xl border bg-muted/20 px-4 py-3 text-sm">
                   {item}
                 </div>
               ))
@@ -72,7 +73,7 @@ export function PatientProfileTabs({ patient }: PatientProfileTabsProps) {
           <CardContent className="space-y-3">
             {patient.visits.length ? (
               patient.visits.map((visit) => (
-                <div key={visit.id} className="rounded-md border px-3 py-2">
+                <div key={visit.id} className="rounded-2xl border px-4 py-3">
                   <p className="font-medium">{visit.chiefComplaint}</p>
                   <p className="text-sm text-muted-foreground">{visit.diagnosis}</p>
                 </div>
@@ -92,7 +93,7 @@ export function PatientProfileTabs({ patient }: PatientProfileTabsProps) {
           <CardContent className="space-y-3">
             {patient.prescriptions.length ? (
               patient.prescriptions.map((prescription) => (
-                <div key={prescription.id} className="rounded-md border px-3 py-2">
+                <div key={prescription.id} className="rounded-2xl border px-4 py-3">
                   <p className="font-medium">{prescription.printableLabel}</p>
                   <p className="text-sm text-muted-foreground">{prescription.medicines.map((medicine) => medicine.name).join(", ")}</p>
                 </div>
@@ -112,7 +113,7 @@ export function PatientProfileTabs({ patient }: PatientProfileTabsProps) {
           <CardContent className="space-y-3">
             {patient.appointments.length ? (
               patient.appointments.map((appointment) => (
-                <div key={appointment.id} className="flex items-center justify-between gap-3 rounded-md border px-3 py-2">
+                <div key={appointment.id} className="flex items-center justify-between gap-3 rounded-2xl border px-4 py-3">
                   <div>
                     <p className="font-medium">{appointment.reason}</p>
                     <p className="text-sm text-muted-foreground">{new Date(appointment.scheduledAt).toLocaleString()}</p>
@@ -137,7 +138,7 @@ export function PatientProfileTabs({ patient }: PatientProfileTabsProps) {
           <CardContent className="space-y-3">
             {patient.payments.length ? (
               patient.payments.map((payment) => (
-                <div key={payment.id} className="flex items-center justify-between rounded-md border px-3 py-2">
+                <div key={payment.id} className="flex items-center justify-between rounded-2xl border px-4 py-3">
                   <div>
                     <p className="font-medium">{payment.title}</p>
                     <p className="text-sm text-muted-foreground">{new Date(payment.occurredAt).toLocaleString()}</p>
@@ -159,11 +160,16 @@ export function PatientProfileTabs({ patient }: PatientProfileTabsProps) {
   );
 }
 
-function ProfileField({ label, value }: { label: string; value: string }) {
+function ProfileField({ icon: Icon, label, value }: { icon: typeof UserRound; label: string; value: string }) {
   return (
-    <div className="rounded-md border bg-muted/20 p-3">
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">{label}</p>
-      <p className="mt-1 text-sm font-medium">{value}</p>
+    <div className="flex items-start gap-3 rounded-2xl border bg-muted/20 p-4">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-secondary-foreground">
+        <Icon className="h-4 w-4" />
+      </span>
+      <div>
+        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
+        <p className="mt-1 text-sm font-semibold">{value}</p>
+      </div>
     </div>
   );
 }

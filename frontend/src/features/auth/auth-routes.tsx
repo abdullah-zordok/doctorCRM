@@ -4,6 +4,16 @@ import { PageSkeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/features/auth/auth-provider";
 import type { Role } from "@/types/api";
 
+function AuthLoadingScreen() {
+  return (
+    <div className="min-h-screen p-5 sm:p-8">
+      <div className="mx-auto max-w-[1540px] rounded-3xl border bg-card/80 p-6 shadow-soft">
+        <PageSkeleton />
+      </div>
+    </div>
+  );
+}
+
 export function roleHomePath(role: Role) {
   return role === "DOCTOR" ? "/doctor" : "/secretary";
 }
@@ -13,11 +23,7 @@ export function ProtectedRoute({ allowedRoles }: { allowedRoles?: Role[] }) {
   const { user, status } = useAuth();
 
   if (status === "loading") {
-    return (
-      <div className="min-h-screen bg-background p-6">
-        <PageSkeleton />
-      </div>
-    );
+    return <AuthLoadingScreen />;
   }
 
   if (!user) {
@@ -35,11 +41,7 @@ export function PublicOnlyRoute() {
   const { user, status } = useAuth();
 
   if (status === "loading") {
-    return (
-      <div className="min-h-screen bg-background p-6">
-        <PageSkeleton />
-      </div>
-    );
+    return <AuthLoadingScreen />;
   }
 
   if (user) {
@@ -53,11 +55,7 @@ export function RootRedirect() {
   const { user, status } = useAuth();
 
   if (status === "loading") {
-    return (
-      <div className="min-h-screen bg-background p-6">
-        <PageSkeleton />
-      </div>
-    );
+    return <AuthLoadingScreen />;
   }
 
   return <Navigate to={user ? roleHomePath(user.role) : "/login"} replace />;

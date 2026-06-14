@@ -40,18 +40,26 @@ export function AppointmentForm({ onSubmit, defaultValues, submitLabel = "Save a
   const { register, handleSubmit, formState, setValue, watch } = form;
 
   return (
-    <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
-      <Field label="Patient ID" error={formState.errors.patientId?.message}>
-        <Input {...register("patientId")} placeholder="pat-001" />
-      </Field>
-      <Field label="Scheduled at" error={formState.errors.scheduledAt?.message}>
-        <Input type="datetime-local" {...register("scheduledAt")} />
-      </Field>
-      <Field label="Reason" error={formState.errors.reason?.message}>
-        <Input {...register("reason")} placeholder="Follow-up visit" />
-      </Field>
+    <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <p className="clinic-kicker">Appointment details</p>
+        <p className="mt-1 text-sm text-muted-foreground">Schedule the patient and assign the right clinic priority.</p>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <Field label="Patient ID" error={formState.errors.patientId?.message}>
+          <Input {...register("patientId")} placeholder="pat-001" />
+        </Field>
+        <Field label="Scheduled at" error={formState.errors.scheduledAt?.message}>
+          <Input type="datetime-local" {...register("scheduledAt")} />
+        </Field>
+        <div className="md:col-span-2">
+          <Field label="Reason" error={formState.errors.reason?.message}>
+            <Input {...register("reason")} placeholder="Follow-up visit" />
+          </Field>
+        </div>
+      </div>
       <Field label="Notes" error={formState.errors.notes?.message}>
-        <textarea className="clinic-focus min-h-24 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm" {...register("notes")} />
+        <textarea className="clinic-focus min-h-24 w-full rounded-xl border border-input bg-background/90 px-3.5 py-3 text-sm shadow-sm" {...register("notes")} />
       </Field>
       <div className="grid gap-4 md:grid-cols-2">
         <Field label="Priority" error={formState.errors.priority?.message}>
@@ -81,7 +89,7 @@ export function AppointmentForm({ onSubmit, defaultValues, submitLabel = "Save a
         </Field>
       </div>
       <div className="flex justify-end">
-        <Button type="submit">{submitLabel}</Button>
+        <Button type="submit" size="lg">{submitLabel}</Button>
       </div>
     </form>
   );

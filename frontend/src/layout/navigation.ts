@@ -13,13 +13,13 @@ export type NavItem = {
 
 export const navigationItems: NavItem[] = [
   {
-    label: "Dashboard",
+    label: "Doctor dashboard",
     path: workflowRoutes.doctorDashboard,
     icon: LayoutDashboard,
     roles: ["DOCTOR"]
   },
   {
-    label: "Dashboard",
+    label: "Front desk",
     path: workflowRoutes.secretaryDashboard,
     icon: Home,
     roles: ["SECRETARY"]
@@ -38,7 +38,7 @@ export const navigationItems: NavItem[] = [
     roles: ["DOCTOR", "SECRETARY"]
   },
   {
-    label: "Visits",
+    label: "Consultations",
     path: "/visits",
     icon: Stethoscope,
     isActive: (pathname) => pathname.startsWith("/visits") && !pathname.includes("/prescriptions/"),

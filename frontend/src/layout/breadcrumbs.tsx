@@ -9,11 +9,11 @@ export function Breadcrumbs() {
 
   return (
     <nav className="flex min-w-0 items-center gap-2 text-sm" aria-label="Breadcrumb">
-      <Link to="/" className="shrink-0 text-muted-foreground hover:text-foreground">
+      <Link to="/" className="clinic-focus shrink-0 rounded-md px-1 text-muted-foreground hover:text-foreground">
         Clinic
       </Link>
       <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-      <span className="truncate font-medium">{label}</span>
+      <span className="truncate rounded-full bg-card px-3 py-1 font-semibold shadow-sm">{label}</span>
     </nav>
   );
 }

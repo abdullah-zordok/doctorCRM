@@ -155,18 +155,22 @@ function WelcomeCard({ role, name }: { role: string; name?: string }) {
 
 export function PlaceholderPage({ title, description }: { title: string; description: string }) {
   return (
-    <div className="space-y-6">
-      <section className="rounded-lg border bg-card p-5 shadow-soft">
+    <div className="clinic-page">
+      <section className="clinic-page-header">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <Badge variant="outline">Future module</Badge>
-            <h1 className="mt-3 text-2xl font-semibold tracking-normal">{title}</h1>
+            <h1 className="mt-3 text-3xl font-bold tracking-tight">{title}</h1>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
           </div>
           <CheckCircle2 className="h-8 w-8 text-primary" aria-hidden="true" />
         </div>
       </section>
-      <EmptyState title={`${title} content is not implemented yet`} description="This route exists to validate shell navigation, breadcrumbs, responsive behavior, and protected access. Detailed workflows belong to the next specification." />
+      <Card>
+        <CardContent className="p-6">
+          <EmptyState title={`${title} content is not implemented yet`} description="This route remains available inside the shared clinic shell while its detailed workflow is defined in a later specification." />
+        </CardContent>
+      </Card>
     </div>
   );
 }

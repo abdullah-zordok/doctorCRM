@@ -20,8 +20,8 @@ export function TopNav({ onOpenSidebar }: TopNavProps) {
   }
 
   return (
-    <header className="sticky top-0 z-30 border-b bg-background/90 backdrop-blur">
-      <div className="flex min-h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-30 border-b border-border/70 bg-background/82 backdrop-blur-xl">
+      <div className="flex min-h-20 items-center gap-3 px-4 sm:px-6 lg:px-8">
         <Button type="button" variant="ghost" size="icon" className="lg:hidden" onClick={onOpenSidebar}>
           <Menu className="h-5 w-5" />
           <span className="sr-only">Open navigation</span>
@@ -31,7 +31,7 @@ export function TopNav({ onOpenSidebar }: TopNavProps) {
           <Breadcrumbs />
         </div>
 
-        <div className="hidden w-full max-w-md md:block">
+        <div className="hidden w-full max-w-xl md:block">
           <GlobalSearch />
         </div>
 
@@ -47,8 +47,8 @@ export function TopNav({ onOpenSidebar }: TopNavProps) {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button type="button" variant="ghost" className="h-10 gap-3 px-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
+            <Button type="button" variant="ghost" className="h-11 gap-3 rounded-2xl px-2">
+              <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-secondary text-secondary-foreground">
                 <UserRound className="h-4 w-4" />
               </span>
               <span className="hidden text-left sm:block">
@@ -69,7 +69,7 @@ export function TopNav({ onOpenSidebar }: TopNavProps) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="border-t px-4 py-3 md:hidden">
+      <div className="border-t border-border/70 px-4 py-3 md:hidden">
         <GlobalSearch />
       </div>
     </header>

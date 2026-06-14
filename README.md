@@ -2,6 +2,9 @@
 
 Backend and frontend foundation for the Doctor Clinic Management System.
 
+For complete startup, migration, verification, troubleshooting, and shutdown
+steps, see [RUN_PROJECT.md](RUN_PROJECT.md).
+
 ## Spec 001: Core Backend Foundation
 
 The current implementation covers Dockerized backend startup, PostgreSQL,

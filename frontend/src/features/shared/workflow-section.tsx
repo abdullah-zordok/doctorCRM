@@ -12,8 +12,8 @@ type WorkflowSectionProps = {
 
 export function WorkflowSection({ title, description, actions, children, className }: WorkflowSectionProps) {
   return (
-    <Card className={cn(className)}>
-      <CardHeader className="flex-row items-start justify-between space-y-0 gap-4">
+    <Card className={cn("overflow-hidden", className)}>
+      <CardHeader className="flex-row items-start justify-between gap-4 space-y-0 border-b border-border/60 bg-muted/20">
         <div className="min-w-0">
           <CardTitle className="text-base">{title}</CardTitle>
           {description ? <CardDescription className="mt-1">{description}</CardDescription> : null}

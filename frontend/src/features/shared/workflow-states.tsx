@@ -14,11 +14,11 @@ type StatePanelProps = {
 export function WorkflowSkeleton() {
   return (
     <div className="space-y-4">
-      <Skeleton className="h-8 w-56" />
+      <Skeleton className="h-10 w-56 rounded-2xl" />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        <Skeleton className="h-32" />
-        <Skeleton className="h-32" />
-        <Skeleton className="h-32" />
+        <Skeleton className="h-36 rounded-2xl" />
+        <Skeleton className="h-36 rounded-2xl" />
+        <Skeleton className="h-36 rounded-2xl" />
       </div>
     </div>
   );
@@ -26,7 +26,7 @@ export function WorkflowSkeleton() {
 
 export function WorkflowLoadingState({ label = "Loading clinic workflow..." }: { label?: string }) {
   return (
-    <div className="flex items-center gap-2 rounded-lg border bg-card p-4 text-sm text-muted-foreground">
+    <div className="flex items-center gap-2 rounded-2xl border bg-card/95 p-4 text-sm text-muted-foreground shadow-sm">
       <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
       {label}
     </div>
@@ -43,7 +43,7 @@ export function WorkflowErrorState({ title, description, onRetry }: StatePanelPr
 
 export function InlineStateNotice({ label }: { label: string }) {
   return (
-    <div className="flex items-center gap-2 rounded-md border border-dashed bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+    <div className="flex items-center gap-2 rounded-2xl border border-dashed bg-muted/50 px-4 py-3 text-sm text-muted-foreground">
       <AlertTriangle className="h-4 w-4" aria-hidden="true" />
       {label}
     </div>
