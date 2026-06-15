@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Filter, Plus, RefreshCcw, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -15,6 +16,7 @@ import { workflowRoutes } from "@/routes/workflow-routes";
 import type { PatientSummaryRecord } from "@/types/workflow";
 
 export function PatientsListPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [search, setSearch] = React.useState("");
   const [page, setPage] = React.useState(1);
@@ -80,30 +82,30 @@ export function PatientsListPage() {
       <section className="clinic-page-header">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div className="max-w-2xl">
-            <p className="clinic-kicker">Patient workspace</p>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight">Patient records</h1>
+            <p className="clinic-kicker">{t("patients.kicker")}</p>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight">{t("patients.title")}</h1>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              Search by name, phone, or patient code. Keep quick actions close and avoid long unstructured lists.
+              {t("patients.description")}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button type="button" variant="outline" onClick={() => refetch()}>
               <RefreshCcw className="h-4 w-4" />
-              Refresh
+              {t("common.actions.retry")}
             </Button>
             <Dialog open={registerOpen} onOpenChange={setRegisterOpen}>
               <DialogTrigger asChild>
                 <Button type="button">
                   <Plus className="h-4 w-4" />
-                  Add patient
+                  {t("patients.add")}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Register patient</DialogTitle>
-                  <DialogDescription>Create a patient record with instant validation and grouped fields.</DialogDescription>
+                  <DialogTitle>{t("patients.add")}</DialogTitle>
+                  <DialogDescription>{t("patients.profileDescription")}</DialogDescription>
                 </DialogHeader>
-                <PatientForm onSubmit={handleSavePatient} submitLabel="Create patient" />
+                <PatientForm onSubmit={handleSavePatient} submitLabel={t("patients.create")} />
               </DialogContent>
             </Dialog>
           </div>
@@ -115,36 +117,36 @@ export function PatientsListPage() {
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary text-secondary-foreground"><Users className="h-4 w-4" /></span>
-              <CardTitle className="text-base">All patients</CardTitle>
+              <CardTitle className="text-base">{t("patients.title")}</CardTitle>
             </div>
-            <CardDescription>Use the patient code, phone, or name to locate the right record quickly.</CardDescription>
+            <CardDescription>{t("patients.description")}</CardDescription>
           </div>
           <div className="grid gap-3 md:grid-cols-[minmax(16rem,24rem)_12rem]">
-            <SearchInput value={search} onChange={(event) => { setSearch(event.target.value); setPage(1); }} placeholder="Search name, phone, or code" aria-label="Search patients" />
+            <SearchInput value={search} onChange={(event) => { setSearch(event.target.value); setPage(1); }} placeholder={t("patients.searchPlaceholder")} aria-label={t("patients.searchLabel")} />
             <Select value={sortBy} onValueChange={(value) => setSortBy(value as "name" | "recent" | "code")}>
               <SelectTrigger>
                 <Filter className="h-4 w-4" />
-                <SelectValue placeholder="Sort" />
+                <SelectValue placeholder={t("patients.sort")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="name">Sort by name</SelectItem>
-                <SelectItem value="recent">Sort by recent visit</SelectItem>
-                <SelectItem value="code">Sort by patient code</SelectItem>
+                <SelectItem value="name">{t("patients.sortName")}</SelectItem>
+                <SelectItem value="recent">{t("patients.sortRecent")}</SelectItem>
+                <SelectItem value="code">{t("patients.sortCode")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </CardHeader>
         <CardContent className="pt-5 sm:pt-6">
-          {isLoading ? <WorkflowSkeleton /> : isError ? <WorkflowErrorState title="Patients unavailable" description="The patient list could not be loaded." onRetry={() => void refetch()} /> : data ? data.items.length ? (
+          {isLoading ? <WorkflowSkeleton /> : isError ? <WorkflowErrorState title={t("patients.unavailable")} description={t("patients.unavailableDescription")} onRetry={() => void refetch()} /> : data ? data.items.length ? (
             <div className="space-y-4">
               <PatientTable data={data.items} isLoading={false} onEdit={setEditingPatient} onBook={handleBook} />
               <Pagination page={data.page} totalPages={data.totalPages} onPageChange={setPage} />
             </div>
           ) : (
             <WorkflowEmptyState
-              title="No patients found"
-              description="Try another search term or register a new patient."
-              actionLabel="Add patient"
+              title={t("patients.empty")}
+              description={t("patients.emptyDescription")}
+              actionLabel={t("patients.add")}
               onAction={() => setRegisterOpen(true)}
             />
           ) : null}
@@ -154,20 +156,20 @@ export function PatientsListPage() {
       <Dialog open={Boolean(editingPatient)} onOpenChange={(open) => !open && setEditingPatient(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit patient</DialogTitle>
-            <DialogDescription>Update patient details without creating a new record.</DialogDescription>
+            <DialogTitle>{t("patients.edit")}</DialogTitle>
+            <DialogDescription>{t("patients.profileDescription")}</DialogDescription>
           </DialogHeader>
-          {editingPatient ? <PatientForm defaultValues={editingPatient} onSubmit={handleSavePatient} submitLabel="Save changes" /> : null}
+          {editingPatient ? <PatientForm defaultValues={editingPatient} onSubmit={handleSavePatient} submitLabel={t("patients.saveChanges")} /> : null}
         </DialogContent>
       </Dialog>
 
       <Dialog open={Boolean(bookingPatient)} onOpenChange={(open) => !open && setBookingPatient(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Booking patient</DialogTitle>
-            <DialogDescription>Appointment creation is handled through the shared booking flow.</DialogDescription>
+            <DialogTitle>{t("appointments.book")}</DialogTitle>
+            <DialogDescription>{t("appointments.description")}</DialogDescription>
           </DialogHeader>
-          <p className="text-sm text-muted-foreground">A new appointment was created and the schedule was refreshed.</p>
+          <p className="text-sm text-muted-foreground">{t("appointments.savedDescription")}</p>
         </DialogContent>
       </Dialog>
     </div>

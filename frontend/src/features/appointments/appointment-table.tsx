@@ -2,8 +2,10 @@ import { CalendarCheck2, CalendarX2, Clock3, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 import { StatusChip } from "@/features/shared/status-chip";
 import { sortAppointmentsByPriority } from "@/features/shared/workflow-status";
+import { formatDateTime } from "@/i18n/format";
 import type { AppointmentRecord } from "@/types/workflow";
 
 type AppointmentTableProps = {
@@ -14,12 +16,13 @@ type AppointmentTableProps = {
 };
 
 export function AppointmentTable({ data, onStatusChange, onEdit }: AppointmentTableProps) {
+  const { t, i18n } = useTranslation();
   const rows = sortAppointmentsByPriority(data);
 
   return (
     <Card className="overflow-hidden">
       <CardHeader className="border-b border-border/60 bg-muted/20 pb-4">
-        <CardTitle className="text-base">Today's appointments</CardTitle>
+        <CardTitle className="text-base">{t("appointments.title")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         {rows.map((appointment) => (
@@ -29,30 +32,30 @@ export function AppointmentTable({ data, onStatusChange, onEdit }: AppointmentTa
                 <div className="flex flex-wrap items-center gap-2">
                   <h3 className="font-semibold">{appointment.patientName}</h3>
                   <StatusChip status={appointment.status} />
-                  <Badge variant={appointment.priority === "urgent" ? "warning" : "secondary"}>{appointment.priority} priority</Badge>
+                  <Badge variant={appointment.priority === "urgent" ? "warning" : "secondary"}>{t("common.priority.label", { priority: t(`common.priority.${appointment.priority}`) })}</Badge>
                 </div>
                 <p className="text-sm text-muted-foreground">{appointment.reason}</p>
                 <p className="text-xs text-muted-foreground">
-                  {appointment.patientCode} - {new Date(appointment.scheduledAt).toLocaleString()}
+                  {appointment.patientCode} - {formatDateTime(appointment.scheduledAt, i18n.resolvedLanguage ?? i18n.language)}
                 </p>
                 <p className="text-xs text-muted-foreground">{appointment.notes}</p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <Button type="button" variant="outline" size="sm" onClick={() => onEdit(appointment)}>
                   <Pencil className="h-4 w-4" />
-                  Edit
+                  {t("common.actions.edit")}
                 </Button>
                 <Button type="button" variant="soft" size="sm" onClick={() => onStatusChange(appointment, "waiting")}>
                   <Clock3 className="h-4 w-4" />
-                  Waiting
+                  {t("common.status.waiting")}
                 </Button>
                 <Button type="button" variant="soft" size="sm" onClick={() => onStatusChange(appointment, "completed")}>
                   <CalendarCheck2 className="h-4 w-4" />
-                  Complete
+                  {t("appointments.table.complete")}
                 </Button>
                 <Button type="button" variant="outline" size="sm" onClick={() => onStatusChange(appointment, "cancelled")}>
                   <CalendarX2 className="h-4 w-4" />
-                  Cancel
+                  {t("common.actions.cancel")}
                 </Button>
               </div>
             </div>

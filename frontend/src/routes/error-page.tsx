@@ -1,11 +1,13 @@
 import { isRouteErrorResponse, Link, useRouteError } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function ErrorPage() {
+  const { t } = useTranslation();
   const error = useRouteError();
-  const title = isRouteErrorResponse(error) ? `${error.status} ${error.statusText}` : "Page unavailable";
-  const description = isRouteErrorResponse(error) ? error.data : "The requested page could not be loaded.";
+  const title = isRouteErrorResponse(error) ? `${error.status} ${error.statusText}` : t("errors.pageUnavailable");
+  const description = isRouteErrorResponse(error) ? error.data : t("errors.pageDescription");
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-background p-4">
@@ -16,7 +18,7 @@ export function ErrorPage() {
         </CardHeader>
         <CardContent>
           <Button asChild>
-            <Link to="/">Return to workspace</Link>
+            <Link to="/">{t("errors.return")}</Link>
           </Button>
         </CardContent>
       </Card>

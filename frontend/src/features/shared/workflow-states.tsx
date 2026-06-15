@@ -1,4 +1,5 @@
 import { AlertTriangle, Inbox, Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ErrorState } from "@/components/ui/error-state";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,11 +25,12 @@ export function WorkflowSkeleton() {
   );
 }
 
-export function WorkflowLoadingState({ label = "Loading clinic workflow..." }: { label?: string }) {
+export function WorkflowLoadingState({ label }: { label?: string }) {
+  const { t } = useTranslation();
   return (
     <div className="flex items-center gap-2 rounded-2xl border bg-card/95 p-4 text-sm text-muted-foreground shadow-sm">
       <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-      {label}
+      {label ?? t("common.loading")}
     </div>
   );
 }
@@ -38,7 +40,8 @@ export function WorkflowEmptyState({ title, description, actionLabel, onAction }
 }
 
 export function WorkflowErrorState({ title, description, onRetry }: StatePanelProps) {
-  return <ErrorState title={title} description={description} retryLabel="Retry" onRetry={onRetry} />;
+  const { t } = useTranslation();
+  return <ErrorState title={title} description={description} retryLabel={t("common.actions.retry")} onRetry={onRetry} />;
 }
 
 export function InlineStateNotice({ label }: { label: string }) {

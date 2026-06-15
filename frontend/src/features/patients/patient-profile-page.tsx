@@ -1,5 +1,6 @@
 import { CalendarPlus, Pencil, Phone, UserRound } from "lucide-react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { PatientForm, type PatientFormValues } from "@/features/patients/patient-form";
@@ -9,6 +10,7 @@ import { WorkflowErrorState, WorkflowSkeleton } from "@/features/shared/workflow
 import { useState } from "react";
 
 export function PatientProfilePage() {
+  const { t } = useTranslation();
   const { patientId = "" } = useParams();
   const [editOpen, setEditOpen] = useState(false);
   const { data, isLoading, isError, refetch } = usePatientProfile(patientId);
@@ -41,7 +43,7 @@ export function PatientProfilePage() {
   }
 
   if (isError || !data) {
-    return <WorkflowErrorState title="Patient record unavailable" description="The patient profile could not be loaded." onRetry={() => void refetch()} />;
+    return <WorkflowErrorState title={t("patients.profileUnavailable")} description={t("patients.profileUnavailableDescription")} onRetry={() => void refetch()} />;
   }
 
   return (
@@ -62,8 +64,8 @@ export function PatientProfilePage() {
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button type="button" variant="outline"><CalendarPlus className="h-4 w-4" /> Book appointment</Button>
-            <Button type="button" onClick={() => setEditOpen(true)}><Pencil className="h-4 w-4" /> Edit patient</Button>
+            <Button type="button" variant="outline"><CalendarPlus className="h-4 w-4" /> {t("appointments.book")}</Button>
+            <Button type="button" onClick={() => setEditOpen(true)}><Pencil className="h-4 w-4" /> {t("patients.edit")}</Button>
           </div>
         </div>
       </section>
@@ -73,10 +75,10 @@ export function PatientProfilePage() {
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit patient</DialogTitle>
-            <DialogDescription>Update patient details while preserving the existing record history.</DialogDescription>
+            <DialogTitle>{t("patients.edit")}</DialogTitle>
+            <DialogDescription>{t("patients.profileDescription")}</DialogDescription>
           </DialogHeader>
-          <PatientForm defaultValues={data} onSubmit={handleSavePatient} submitLabel="Save changes" />
+          <PatientForm defaultValues={data} onSubmit={handleSavePatient} submitLabel={t("patients.saveChanges")} />
         </DialogContent>
       </Dialog>
     </div>

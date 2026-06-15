@@ -82,6 +82,7 @@ export interface PatientTimelineEvent {
   type: "visit" | "appointment" | "prescription" | "note" | "payment";
   occurredAt: string;
   title: string;
+  titleKey?: string;
   description: string;
   status: WorkflowStatus;
   sourceId: string;
@@ -96,6 +97,7 @@ export interface PatientProfile extends PatientRecord {
     id: string;
     occurredAt: string;
     title: string;
+    titleKey?: string;
     amount: string;
     status: "paid" | "pending" | "void";
   }>;
@@ -137,6 +139,7 @@ export interface PrescriptionRecord {
   status: "draft" | "issued";
   createdAt: string;
   printableLabel: string;
+  printableLabelKey?: string;
 }
 
 export interface AppointmentRecord {

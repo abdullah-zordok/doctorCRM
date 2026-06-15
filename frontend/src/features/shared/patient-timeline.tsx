@@ -1,7 +1,9 @@
 import { CalendarClock, FileText, NotebookText, Stethoscope, WalletCards } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusChip } from "@/features/shared/status-chip";
+import { formatDateTime } from "@/i18n/format";
 import type { PatientTimelineEvent } from "@/types/workflow";
 
 const icons = {
@@ -17,15 +19,16 @@ type PatientTimelineProps = {
 };
 
 export function PatientTimeline({ events }: PatientTimelineProps) {
+  const { t, i18n } = useTranslation();
   return (
     <Card className="overflow-hidden">
       <CardHeader className="border-b border-border/60 bg-muted/20">
-        <CardTitle className="text-base">Timeline</CardTitle>
-        <CardDescription>Visit, prescription, appointment, and note history in chronological order.</CardDescription>
+        <CardTitle className="text-base">{t("patients.timeline")}</CardTitle>
+        <CardDescription>{t("patients.timelineDescription")}</CardDescription>
       </CardHeader>
       <CardContent>
         {events.length ? (
-          <div className="relative space-y-4 before:absolute before:bottom-5 before:left-5 before:top-5 before:w-px before:bg-border">
+          <div className="relative space-y-4 before:absolute before:bottom-5 before:start-5 before:top-5 before:w-px before:bg-border">
             {events.map((event) => {
               const Icon = icons[event.type];
               return (
@@ -35,21 +38,21 @@ export function PatientTimeline({ events }: PatientTimelineProps) {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h4 className="font-semibold">{event.title}</h4>
+                      <h4 className="font-semibold">{event.titleKey ? t(event.titleKey, { status: t(`common.status.${event.status}`) }) : event.title}</h4>
                       <StatusChip status={event.status} />
                     </div>
                     <p className="mt-1 text-sm text-muted-foreground">{event.description}</p>
-                    <p className="mt-2 text-xs text-muted-foreground">{new Date(event.occurredAt).toLocaleString()}</p>
+                    <p className="mt-2 text-xs text-muted-foreground">{formatDateTime(event.occurredAt, i18n.resolvedLanguage ?? i18n.language)}</p>
                   </div>
                   <Badge variant="outline" className="hidden shrink-0 sm:inline-flex">
-                    {event.type}
+                    {t(`common.recordType.${event.type}`)}
                   </Badge>
                 </div>
               );
             })}
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">No timeline events yet.</p>
+          <p className="text-sm text-muted-foreground">{t("patients.noTimeline")}</p>
         )}
       </CardContent>
     </Card>

@@ -1,5 +1,6 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { useTranslation } from "react-i18next";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -17,10 +18,11 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   isLoading = false,
-  emptyTitle = "No records found",
-  emptyDescription = "Try adjusting your filters or create a new record.",
+  emptyTitle,
+  emptyDescription,
   className
 }: DataTableProps<TData, TValue>) {
+  const { t } = useTranslation();
   const table = useReactTable({
     data,
     columns,
@@ -38,14 +40,14 @@ export function DataTable<TData, TValue>({
   }
 
   if (!data.length) {
-    return <EmptyState title={emptyTitle} description={emptyDescription} />;
+    return <EmptyState title={emptyTitle ?? t("common.table.emptyTitle")} description={emptyDescription ?? t("common.table.emptyDescription")} />;
   }
 
   return (
     <div className={cn("overflow-hidden rounded-2xl border border-border/80 bg-card/95 shadow-soft", className)}>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-muted/70 text-left text-xs uppercase tracking-[0.16em] text-muted-foreground">
+          <thead className="bg-muted/70 text-start text-xs uppercase tracking-[0.16em] text-muted-foreground">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (

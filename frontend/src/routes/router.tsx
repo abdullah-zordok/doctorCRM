@@ -133,7 +133,7 @@ export const router = createBrowserRouter([
             path: "/payments",
             element: (
               <LazyPage>
-                <PlaceholderPage title="Payments" description="Payment workflow routes are prepared for SPEC 02 implementation." />
+                <PlaceholderPage titleKey="payments.title" descriptionKey="payments.description" />
               </LazyPage>
             )
           },

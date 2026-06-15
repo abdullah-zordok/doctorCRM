@@ -1,5 +1,6 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
 export const Dialog = DialogPrimitive.Root;
@@ -7,6 +8,7 @@ export const DialogTrigger = DialogPrimitive.Trigger;
 export const DialogClose = DialogPrimitive.Close;
 
 export function DialogContent({ className, children, ...props }: DialogPrimitive.DialogContentProps) {
+  const { t } = useTranslation();
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-slate-950/40 data-[state=open]:animate-in data-[state=closed]:animate-out" />
@@ -18,9 +20,9 @@ export function DialogContent({ className, children, ...props }: DialogPrimitive
         {...props}
       >
         {children}
-        <DialogPrimitive.Close className="clinic-focus absolute right-4 top-4 rounded-sm opacity-70 transition hover:opacity-100">
+        <DialogPrimitive.Close className="clinic-focus absolute end-4 top-4 rounded-sm opacity-70 transition hover:opacity-100">
           <X className="h-4 w-4" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">{t("common.actions.close")}</span>
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>
     </DialogPrimitive.Portal>
@@ -28,7 +30,7 @@ export function DialogContent({ className, children, ...props }: DialogPrimitive
 }
 
 export function DialogHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("flex flex-col space-y-1.5 text-left", className)} {...props} />;
+  return <div className={cn("flex flex-col space-y-1.5 text-start", className)} {...props} />;
 }
 
 export function DialogTitle({ className, ...props }: DialogPrimitive.DialogTitleProps) {

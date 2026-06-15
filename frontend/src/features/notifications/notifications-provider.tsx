@@ -2,6 +2,8 @@
 import * as React from "react";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { AlertCircle, CheckCircle2, Info, TriangleAlert, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { getDirection } from "@/i18n";
 import { cn } from "@/lib/utils";
 
 type NotificationType = "success" | "error" | "warning" | "info";
@@ -37,6 +39,7 @@ const styles = {
 };
 
 export function NotificationsProvider({ children }: { children: React.ReactNode }) {
+  const { t, i18n } = useTranslation();
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
 
   const notify = React.useCallback((notification: NotificationInput) => {
@@ -55,7 +58,7 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
 
   return (
     <NotificationsContext.Provider value={{ notify }}>
-      <ToastPrimitive.Provider swipeDirection="right">
+      <ToastPrimitive.Provider swipeDirection={getDirection(i18n.resolvedLanguage ?? i18n.language) === "rtl" ? "left" : "right"}>
         {children}
         {notifications.map((notification) => {
           const Icon = icons[notification.type];
@@ -77,12 +80,12 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
               </div>
               <ToastPrimitive.Close className="clinic-focus rounded p-1 opacity-70 hover:opacity-100">
                 <X className="h-4 w-4" />
-                <span className="sr-only">Dismiss notification</span>
+                <span className="sr-only">{t("common.actions.dismiss")}</span>
               </ToastPrimitive.Close>
             </ToastPrimitive.Root>
           );
         })}
-        <ToastPrimitive.Viewport className="fixed right-4 top-4 z-[100] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-3 sm:right-6 sm:top-6" />
+        <ToastPrimitive.Viewport className="fixed end-4 top-4 z-[100] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-3 sm:end-6 sm:top-6" />
       </ToastPrimitive.Provider>
     </NotificationsContext.Provider>
   );

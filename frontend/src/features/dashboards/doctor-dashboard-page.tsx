@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { CalendarDays, Stethoscope } from "lucide-react";
 import { useNotifications } from "@/features/notifications/notifications-provider";
@@ -8,6 +9,7 @@ import { WorkflowEmptyState, WorkflowErrorState, WorkflowSkeleton } from "@/feat
 import { workflowRoutes } from "@/routes/workflow-routes";
 
 export function DoctorDashboardPage() {
+  const { t } = useTranslation();
   const { notify } = useNotifications();
   const { data, isLoading, isError, refetch } = useDoctorDashboard();
 
@@ -16,15 +18,15 @@ export function DoctorDashboardPage() {
   }
 
   if (isError || !data) {
-    return <WorkflowErrorState title="Doctor dashboard unavailable" description="The clinical work queue could not be loaded." onRetry={() => void refetch()} />;
+    return <WorkflowErrorState title={t("dashboard.doctor.unavailable")} description={t("dashboard.doctor.unavailableDescription")} onRetry={() => void refetch()} />;
   }
 
   if (!data.items.length) {
     return (
       <WorkflowEmptyState
-        title="No active work queue"
-        description="There are no waiting patients or open visits right now."
-        actionLabel="Refresh dashboard"
+        title={t("dashboard.doctor.empty")}
+        description={t("dashboard.doctor.emptyDescription")}
+        actionLabel={t("dashboard.actions.refresh")}
         onAction={() => void refetch()}
       />
     );
@@ -35,24 +37,24 @@ export function DoctorDashboardPage() {
       <section className="clinic-page-header">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-3xl">
-            <p className="clinic-kicker">Doctor workspace</p>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight">Clinical priorities for today</h1>
+            <p className="clinic-kicker">{t("dashboard.doctor.kicker")}</p>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight">{t("dashboard.doctor.title")}</h1>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              Waiting patients and active consultations stay in front. Analytics stay visible but secondary.
+              {t("dashboard.doctor.description")}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button asChild variant="outline">
-              <Link to={workflowRoutes.patients}><Stethoscope className="h-4 w-4" /> Open patients</Link>
+              <Link to={workflowRoutes.patients}><Stethoscope className="h-4 w-4" /> {t("dashboard.actions.openPatients")}</Link>
             </Button>
             <Button asChild variant="outline">
-              <Link to={workflowRoutes.appointments}><CalendarDays className="h-4 w-4" /> Review schedule</Link>
+              <Link to={workflowRoutes.appointments}><CalendarDays className="h-4 w-4" /> {t("dashboard.actions.reviewSchedule")}</Link>
             </Button>
             <Button
               type="button"
-              onClick={() => notify({ type: "success", title: "Doctor dashboard ready", description: "Queue, analytics, and quick actions are loaded." })}
+              onClick={() => notify({ type: "success", title: t("dashboard.doctor.ready"), description: t("dashboard.doctor.readyDescription") })}
             >
-              Check workspace
+              {t("dashboard.actions.checkWorkspace")}
             </Button>
           </div>
         </div>

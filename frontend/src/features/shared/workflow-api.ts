@@ -17,6 +17,8 @@ import type {
 } from "@/types/workflow";
 import { workflowRoutes } from "@/routes/workflow-routes";
 import { sortAppointmentsByPriority } from "@/features/shared/workflow-status";
+import i18n from "@/i18n";
+import { formatDate, formatDateTime, formatTime } from "@/i18n/format";
 
 type WorkflowStore = {
   patients: PatientRecord[];
@@ -282,7 +284,8 @@ const seedPrescriptions: PrescriptionRecord[] = [
     notes: "Maintain diet and activity plan.",
     status: "issued",
     createdAt: toIsoDateTime(-1, 12, 0),
-    printableLabel: "Prescription ready for print"
+    printableLabel: "Prescription ready for print",
+    printableLabelKey: "prescriptions.preview.readyForPrint"
   }
 ];
 
@@ -357,6 +360,7 @@ function createTimelineSeed(): Record<string, PatientTimelineEvent[]> {
         type: "appointment",
         occurredAt: toIsoDateTime(0, 8, 45),
         title: "Appointment waiting",
+        titleKey: "patients.system.appointmentWaiting",
         description: "Checked in for acute symptom review.",
         status: "waiting",
         sourceId: "app-001"
@@ -366,6 +370,7 @@ function createTimelineSeed(): Record<string, PatientTimelineEvent[]> {
         type: "visit",
         occurredAt: toIsoDateTime(-2, 10, 0),
         title: "Previous visit completed",
+        titleKey: "patients.system.previousVisitCompleted",
         description: "Hydration and sleep guidance recorded.",
         status: "completed",
         sourceId: "vis-010"
@@ -377,6 +382,7 @@ function createTimelineSeed(): Record<string, PatientTimelineEvent[]> {
         type: "visit",
         occurredAt: toIsoDateTime(-1, 11, 55),
         title: "Completed diabetes follow-up",
+        titleKey: "patients.system.diabetesFollowUpCompleted",
         description: "Medication plan updated and prescription issued.",
         status: "completed",
         sourceId: "vis-002"
@@ -386,6 +392,7 @@ function createTimelineSeed(): Record<string, PatientTimelineEvent[]> {
         type: "prescription",
         occurredAt: toIsoDateTime(-1, 12, 0),
         title: "Prescription issued",
+        titleKey: "patients.system.prescriptionIssued",
         description: "Metformin and vitamin D prescription generated.",
         status: "issued",
         sourceId: "pre-001"
@@ -397,6 +404,7 @@ function createTimelineSeed(): Record<string, PatientTimelineEvent[]> {
         type: "visit",
         occurredAt: toIsoDateTime(-6, 10, 40),
         title: "Completed pediatric visit",
+        titleKey: "patients.system.pediatricVisitCompleted",
         description: "Viral illness advice recorded.",
         status: "completed",
         sourceId: "vis-003"
@@ -408,6 +416,7 @@ function createTimelineSeed(): Record<string, PatientTimelineEvent[]> {
         type: "appointment",
         occurredAt: toIsoDateTime(0, 11, 0),
         title: "Waiting appointment",
+        titleKey: "patients.system.waitingAppointment",
         description: "Needs triage for knee strain.",
         status: "waiting",
         sourceId: "app-004"
@@ -419,6 +428,7 @@ function createTimelineSeed(): Record<string, PatientTimelineEvent[]> {
         type: "appointment",
         occurredAt: toIsoDateTime(0, 12, 15),
         title: "Appointment cancelled",
+        titleKey: "patients.system.appointmentCancelled",
         description: "Reschedule requested by patient.",
         status: "cancelled",
         sourceId: "app-005"
@@ -483,43 +493,46 @@ function matchesPrescription(prescription: PrescriptionRecord, query: string) {
     .includes(query);
 }
 
-function getRoleMetrics(role: WorkflowRole): DashboardMetric[] {
+function getRoleMetrics(role: WorkflowRole, language: string): DashboardMetric[] {
+  const t = i18n.getFixedT(language);
   const waitingAppointments = store.appointments.filter((appointment) => appointment.status === "waiting");
   const completedVisits = store.visits.filter((visit) => visit.status === "completed");
   const newPatients = store.patients.filter((patient) => patient.visitCount <= 1);
 
   if (role === "DOCTOR") {
     return [
-      { label: "Waiting patients", value: String(waitingAppointments.length), tone: "warning", trend: "Requires attention first" },
-      { label: "Open visits", value: String(store.visits.filter((visit) => visit.status === "open").length), tone: "default", trend: "Active consultations" },
-      { label: "Today completed", value: String(completedVisits.filter((visit) => visit.visitDate.startsWith(today.toISOString().slice(0, 10))).length), tone: "success", trend: "Closed today" }
+      { label: t("dashboard.metrics.waitingPatients"), value: String(waitingAppointments.length), tone: "warning", trend: t("dashboard.metrics.requiresAttention") },
+      { label: t("dashboard.metrics.openVisits"), value: String(store.visits.filter((visit) => visit.status === "open").length), tone: "default", trend: t("dashboard.metrics.activeConsultations") },
+      { label: t("dashboard.metrics.todayCompleted"), value: String(completedVisits.filter((visit) => visit.visitDate.startsWith(today.toISOString().slice(0, 10))).length), tone: "success", trend: t("dashboard.metrics.closedToday") }
     ];
   }
 
   return [
-    { label: "Today's appointments", value: String(store.appointments.filter((appointment) => appointment.scheduledAt.startsWith(today.toISOString().slice(0, 10))).length), tone: "default", trend: "Front desk schedule" },
-    { label: "Waiting patients", value: String(waitingAppointments.length), tone: "warning", trend: "Queue ready" },
-    { label: "New patients", value: String(newPatients.length), tone: "success", trend: "Ready to register" }
+    { label: t("dashboard.metrics.todayAppointments"), value: String(store.appointments.filter((appointment) => appointment.scheduledAt.startsWith(today.toISOString().slice(0, 10))).length), tone: "default", trend: t("dashboard.metrics.frontDeskSchedule") },
+    { label: t("dashboard.metrics.waitingPatients"), value: String(waitingAppointments.length), tone: "warning", trend: t("dashboard.metrics.queueReady") },
+    { label: t("dashboard.metrics.newPatients"), value: String(newPatients.length), tone: "success", trend: t("dashboard.metrics.readyToRegister") }
   ];
 }
 
-function getRoleQuickActions(role: WorkflowRole): QuickAction[] {
+function getRoleQuickActions(role: WorkflowRole, language: string): QuickAction[] {
+  const t = i18n.getFixedT(language);
   const doctorActions: QuickAction[] = [
-    { id: "qa-doctor-visit", label: "Start visit", target: { label: "Open visits", href: workflowRoutes.visitWorkspace("vis-001") }, role: "DOCTOR", context: "Move to the active consultation" },
-    { id: "qa-doctor-patient", label: "Edit patient", target: { label: "Open patients", href: workflowRoutes.patientProfile("pat-001") }, role: "DOCTOR" },
-    { id: "qa-doctor-prescription", label: "Generate prescription", target: { label: "New prescription", href: workflowRoutes.prescriptionBuilder("vis-001") }, role: "DOCTOR" }
+    { id: "qa-doctor-visit", label: t("dashboard.actions.startVisit"), target: { label: t("dashboard.actions.openVisits"), href: workflowRoutes.visitWorkspace("vis-001") }, role: "DOCTOR", context: t("dashboard.actions.moveToConsultation") },
+    { id: "qa-doctor-patient", label: t("dashboard.actions.editPatient"), target: { label: t("dashboard.actions.openPatients"), href: workflowRoutes.patientProfile("pat-001") }, role: "DOCTOR" },
+    { id: "qa-doctor-prescription", label: t("dashboard.actions.generatePrescription"), target: { label: t("dashboard.actions.newPrescription"), href: workflowRoutes.prescriptionBuilder("vis-001") }, role: "DOCTOR" }
   ];
 
   const secretaryActions: QuickAction[] = [
-    { id: "qa-secretary-register", label: "Add patient", target: { label: "Patients", href: workflowRoutes.patients }, role: "SECRETARY", context: "Create a new patient record" },
-    { id: "qa-secretary-book", label: "Book appointment", target: { label: "Appointments", href: workflowRoutes.appointments }, role: "SECRETARY" },
-    { id: "qa-secretary-search", label: "Search patient", target: { label: "Patients", href: workflowRoutes.patients }, role: "SECRETARY" }
+    { id: "qa-secretary-register", label: t("dashboard.actions.addPatient"), target: { label: t("navigation.patients"), href: workflowRoutes.patients }, role: "SECRETARY", context: t("dashboard.actions.createPatient") },
+    { id: "qa-secretary-book", label: t("dashboard.actions.bookAppointment"), target: { label: t("navigation.appointments"), href: workflowRoutes.appointments }, role: "SECRETARY" },
+    { id: "qa-secretary-search", label: t("dashboard.actions.searchPatient"), target: { label: t("navigation.patients"), href: workflowRoutes.patients }, role: "SECRETARY" }
   ];
 
   return role === "DOCTOR" ? doctorActions : secretaryActions;
 }
 
-function buildDashboard(role: WorkflowRole): DashboardSummary {
+function buildDashboard(role: WorkflowRole, language: string): DashboardSummary {
+  const t = i18n.getFixedT(language);
   const waitingAppointments = sortAppointmentsByPriority(
     store.appointments.filter((appointment) => appointment.status === "waiting" || appointment.status === "scheduled" || appointment.status === "completed")
   );
@@ -534,11 +547,11 @@ function buildDashboard(role: WorkflowRole): DashboardSummary {
           id: appointment.id,
           type: "waiting-patient" as const,
           title: appointment.patientName,
-          subtitle: `${appointment.reason} - ${new Date(appointment.scheduledAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`,
+          subtitle: `${appointment.reason} - ${formatTime(appointment.scheduledAt, language)}`,
           priority: index === 0 ? "urgent" as const : "high" as const,
           status: appointment.status,
-          actionLabel: "Open queue",
-          target: { label: "Open visit", href: workflowRoutes.visitWorkspace(activeVisits[0]?.id ?? "vis-001") },
+          actionLabel: t("dashboard.actions.openQueue"),
+          target: { label: t("dashboard.actions.openVisit"), href: workflowRoutes.visitWorkspace(activeVisits[0]?.id ?? "vis-001") },
           role,
           metadata: { patientId: appointment.patientId, appointmentId: appointment.id }
         })),
@@ -549,8 +562,8 @@ function buildDashboard(role: WorkflowRole): DashboardSummary {
           subtitle: `${visit.chiefComplaint} - ${visit.room}`,
           priority: "high" as const,
           status: visit.status,
-          actionLabel: "Continue visit",
-          target: { label: "Visit workspace", href: workflowRoutes.visitWorkspace(visit.id) },
+          actionLabel: t("dashboard.actions.continueVisit"),
+          target: { label: t("dashboard.actions.visitWorkspace"), href: workflowRoutes.visitWorkspace(visit.id) },
           role,
           metadata: { patientId: visit.patientId, visitId: visit.id }
         })),
@@ -561,8 +574,8 @@ function buildDashboard(role: WorkflowRole): DashboardSummary {
           subtitle: `${patient.patientCode} - ${patient.phone}`,
           priority: "medium" as const,
           status: "completed" as const,
-          actionLabel: "Open profile",
-          target: { label: "Patient profile", href: workflowRoutes.patientProfile(patient.id) },
+          actionLabel: t("dashboard.actions.openProfile"),
+          target: { label: t("dashboard.actions.patientProfile"), href: workflowRoutes.patientProfile(patient.id) },
           role,
           metadata: { patientId: patient.id }
         })),
@@ -570,11 +583,11 @@ function buildDashboard(role: WorkflowRole): DashboardSummary {
           id: `${appointment.id}-upcoming`,
           type: "upcoming-appointment" as const,
           title: appointment.patientName,
-          subtitle: `${appointment.reason} - ${new Date(appointment.scheduledAt).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}`,
+          subtitle: `${appointment.reason} - ${formatDateTime(appointment.scheduledAt, language, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}`,
           priority: "medium" as const,
           status: appointment.status,
-          actionLabel: "Review schedule",
-          target: { label: "Appointments", href: workflowRoutes.appointments },
+          actionLabel: t("dashboard.actions.reviewSchedule"),
+          target: { label: t("navigation.appointments"), href: workflowRoutes.appointments },
           role,
           metadata: { appointmentId: appointment.id, patientId: appointment.patientId }
         }))
@@ -584,11 +597,11 @@ function buildDashboard(role: WorkflowRole): DashboardSummary {
           id: appointment.id,
           type: "upcoming-appointment" as const,
           title: appointment.patientName,
-          subtitle: `${appointment.reason} - ${new Date(appointment.scheduledAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`,
+          subtitle: `${appointment.reason} - ${formatTime(appointment.scheduledAt, language)}`,
           priority: appointment.status === "waiting" ? "urgent" as const : "high" as const,
           status: appointment.status,
-          actionLabel: appointment.status === "waiting" ? "Check in" : "Open booking",
-          target: { label: "Appointments", href: workflowRoutes.appointments },
+          actionLabel: appointment.status === "waiting" ? t("dashboard.actions.checkIn") : t("dashboard.actions.openBooking"),
+          target: { label: t("navigation.appointments"), href: workflowRoutes.appointments },
           role,
           metadata: { appointmentId: appointment.id, patientId: appointment.patientId }
         })),
@@ -599,8 +612,8 @@ function buildDashboard(role: WorkflowRole): DashboardSummary {
           subtitle: `${appointment.patientCode} - ${appointment.reason}`,
           priority: "urgent" as const,
           status: appointment.status,
-          actionLabel: "Register / book",
-          target: { label: "Patients", href: workflowRoutes.patients },
+          actionLabel: t("dashboard.actions.registerBook"),
+          target: { label: t("navigation.patients"), href: workflowRoutes.patients },
           role,
           metadata: { appointmentId: appointment.id, patientId: appointment.patientId }
         })),
@@ -611,8 +624,8 @@ function buildDashboard(role: WorkflowRole): DashboardSummary {
           subtitle: `${patient.patientCode} - ${patient.phone}`,
           priority: "high" as const,
           status: "scheduled" as const,
-          actionLabel: "Register now",
-          target: { label: "Patients", href: workflowRoutes.patients },
+          actionLabel: t("dashboard.actions.registerNow"),
+          target: { label: t("navigation.patients"), href: workflowRoutes.patients },
           role,
           metadata: { patientId: patient.id }
         })),
@@ -620,11 +633,11 @@ function buildDashboard(role: WorkflowRole): DashboardSummary {
           id: `${visit.id}-completed`,
           type: "completed-visit" as const,
           title: visit.patientName,
-          subtitle: `${visit.diagnosis} - ${new Date(visit.completedAt ?? visit.visitDate).toLocaleDateString()}`,
+          subtitle: `${visit.diagnosis} - ${formatDate(visit.completedAt ?? visit.visitDate, language)}`,
           priority: "medium" as const,
           status: visit.status,
-          actionLabel: "Review history",
-          target: { label: "Patients", href: workflowRoutes.patientProfile(visit.patientId) },
+          actionLabel: t("dashboard.actions.reviewHistory"),
+          target: { label: t("navigation.patients"), href: workflowRoutes.patientProfile(visit.patientId) },
           role,
           metadata: { patientId: visit.patientId, visitId: visit.id }
         }))
@@ -632,11 +645,11 @@ function buildDashboard(role: WorkflowRole): DashboardSummary {
 
   return {
     role,
-    title: role === "DOCTOR" ? "Doctor dashboard" : "Secretary dashboard",
-    subtitle: role === "DOCTOR" ? "Clinical work queue and patient attention priorities" : "Reception workflow and booking priorities",
+    title: t(role === "DOCTOR" ? "dashboard.doctor.title" : "dashboard.secretary.title"),
+    subtitle: t(role === "DOCTOR" ? "dashboard.doctor.description" : "dashboard.secretary.description"),
     items,
-    metrics: getRoleMetrics(role),
-    quickActions: getRoleQuickActions(role).filter((action) => action.role === role || action.role === "BOTH")
+    metrics: getRoleMetrics(role, language),
+    quickActions: getRoleQuickActions(role, language).filter((action) => action.role === role || action.role === "BOTH")
   };
 }
 
@@ -657,6 +670,7 @@ function buildPatientProfile(patient: PatientRecord): PatientProfile {
         id: `${patient.id}-payment-1`,
         occurredAt: toIsoDateTime(-2, 13, 0),
         title: "Consultation fee",
+        titleKey: "patients.system.consultationFee",
         amount: "SAR 200",
         status: "paid"
       }
@@ -679,9 +693,9 @@ function paginate<T>(items: T[], page = 1, pageSize = 8): PaginatedWorkflowResul
   };
 }
 
-export async function fetchDashboard(role: WorkflowRole): Promise<DashboardSummary> {
+export async function fetchDashboard(role: WorkflowRole, language = i18n.resolvedLanguage ?? i18n.language): Promise<DashboardSummary> {
   await delay();
-  return clone(buildDashboard(role));
+  return clone(buildDashboard(role, language));
 }
 
 export async function fetchPatients(query: PatientQuery = {}): Promise<PaginatedWorkflowResult<PatientSummaryRecord>> {
@@ -763,6 +777,7 @@ export async function createPatient(input: PatientInput): Promise<PatientProfile
       type: "note",
       occurredAt: new Date().toISOString(),
       title: "Patient registered",
+      titleKey: "patients.system.patientRegistered",
       description: "Patient record created from the clinic workflow.",
       status: "completed",
       sourceId: patient.id
@@ -823,6 +838,7 @@ export async function finishVisit(visitId: string, input: VisitUpdateInput) {
     type: "visit",
     occurredAt: visit.completedAt ?? new Date().toISOString(),
     title: "Visit completed",
+    titleKey: "patients.system.visitCompleted",
     description: visit.diagnosis,
     status: "completed",
     sourceId: visit.id
@@ -871,7 +887,8 @@ export async function createPrescription(visitId: string, input: PrescriptionInp
     notes: input.notes,
     status: "issued",
     createdAt: new Date().toISOString(),
-    printableLabel: "Printable prescription generated"
+    printableLabel: "Printable prescription generated",
+    printableLabelKey: "prescriptions.preview.generated"
   };
 
   store.prescriptions.unshift(created);
@@ -881,6 +898,7 @@ export async function createPrescription(visitId: string, input: PrescriptionInp
     type: "prescription",
     occurredAt: created.createdAt,
     title: "Prescription issued",
+    titleKey: "patients.system.prescriptionIssued",
     description: created.medicines.map((medicine) => medicine.name).join(", "),
     status: "issued",
     sourceId: created.id
@@ -930,6 +948,7 @@ export async function createAppointment(input: AppointmentInput) {
     type: "appointment",
     occurredAt: appointment.scheduledAt,
     title: "Appointment booked",
+    titleKey: "patients.system.appointmentBooked",
     description: appointment.reason,
     status: "scheduled",
     sourceId: appointment.id
@@ -967,6 +986,7 @@ export async function updateAppointment(appointmentId: string, input: Appointmen
     type: "appointment",
     occurredAt: new Date().toISOString(),
     title: "Appointment updated",
+    titleKey: "patients.system.appointmentUpdated",
     description: appointment.reason,
     status: appointment.status,
     sourceId: appointment.id
@@ -990,6 +1010,7 @@ export async function updateAppointmentStatus(appointmentId: string, status: App
     type: "appointment",
     occurredAt: new Date().toISOString(),
     title: `Appointment ${status}`,
+    titleKey: "patients.system.appointmentStatus",
     description: appointment.reason,
     status,
     sourceId: appointment.id
@@ -999,8 +1020,9 @@ export async function updateAppointmentStatus(appointmentId: string, status: App
   return clone(appointment);
 }
 
-export async function searchWorkflow(query: string): Promise<WorkflowSearchResult[]> {
+export async function searchWorkflow(query: string, language = i18n.resolvedLanguage ?? i18n.language): Promise<WorkflowSearchResult[]> {
   await delay(80);
+  const t = i18n.getFixedT(language);
   const normalized = normalizeQuery(query);
   if (!normalized) {
     return [];
@@ -1012,7 +1034,7 @@ export async function searchWorkflow(query: string): Promise<WorkflowSearchResul
       type: "patient" as const,
       title: patient.name,
       subtitle: `${patient.patientCode} - ${patient.phone}`,
-      target: { label: "Patient profile", href: workflowRoutes.patientProfile(patient.id) },
+      target: { label: t("dashboard.actions.patientProfile"), href: workflowRoutes.patientProfile(patient.id) },
       status: "completed" as const
     })),
     ...store.appointments.filter((appointment) => matchesAppointment(appointment, normalized)).slice(0, 4).map((appointment) => ({
@@ -1020,7 +1042,7 @@ export async function searchWorkflow(query: string): Promise<WorkflowSearchResul
       type: "appointment" as const,
       title: appointment.patientName,
       subtitle: `${appointment.reason} - ${appointment.patientCode}`,
-      target: { label: "Appointments", href: workflowRoutes.appointments },
+      target: { label: t("navigation.appointments"), href: workflowRoutes.appointments },
       status: appointment.status
     })),
     ...store.visits.filter((visit) => matchesVisit(visit, normalized)).slice(0, 4).map((visit) => ({
@@ -1028,15 +1050,15 @@ export async function searchWorkflow(query: string): Promise<WorkflowSearchResul
       type: "visit" as const,
       title: visit.patientName,
       subtitle: `${visit.chiefComplaint} - ${visit.diagnosis}`,
-      target: { label: "Visit workspace", href: workflowRoutes.visitWorkspace(visit.id) },
+      target: { label: t("dashboard.actions.visitWorkspace"), href: workflowRoutes.visitWorkspace(visit.id) },
       status: visit.status
     })),
     ...store.prescriptions.filter((prescription) => matchesPrescription(prescription, normalized)).slice(0, 4).map((prescription) => ({
       id: prescription.id,
       type: "prescription" as const,
       title: prescription.patientName,
-      subtitle: `${prescription.printableLabel} - ${prescription.medicines.length} medicine(s)`,
-      target: { label: "Prescription builder", href: workflowRoutes.prescriptionBuilder(prescription.visitId) },
+      subtitle: `${prescription.printableLabelKey ? t(prescription.printableLabelKey) : prescription.printableLabel} - ${t("prescriptions.medicine.count", { count: prescription.medicines.length })}`,
+      target: { label: t("prescriptions.title"), href: workflowRoutes.prescriptionBuilder(prescription.visitId) },
       status: prescription.status
     }))
   ];

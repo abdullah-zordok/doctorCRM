@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { FilePlus2, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WorkflowErrorState, WorkflowSkeleton } from "@/features/shared/workflow-states";
@@ -10,6 +11,7 @@ import { useNotifications } from "@/features/notifications/notifications-provide
 import { workflowRoutes } from "@/routes/workflow-routes";
 
 export function VisitWorkspacePage() {
+  const { t } = useTranslation();
   const { visitId = "" } = useParams();
   const navigate = useNavigate();
   const { notify } = useNotifications();
@@ -22,7 +24,7 @@ export function VisitWorkspacePage() {
       return;
     }
     await updateVisit.mutateAsync({ visitId: data.visit.id, data: values });
-    notify({ type: "success", title: "Visit saved", description: "Clinical notes were updated without leaving the workspace." });
+    notify({ type: "success", title: t("visits.saved"), description: t("visits.savedDescription") });
   };
 
   const handleFinish = async (values: VisitFormValues) => {
@@ -30,7 +32,7 @@ export function VisitWorkspacePage() {
       return;
     }
     await finishVisit.mutateAsync({ visitId: data.visit.id, data: values });
-    notify({ type: "success", title: "Visit completed", description: "The consultation has been closed and preserved in history." });
+    notify({ type: "success", title: t("visits.completed"), description: t("visits.completedDescription") });
     navigate(workflowRoutes.patientProfile(data.visit.patientId));
   };
 
@@ -39,7 +41,7 @@ export function VisitWorkspacePage() {
   }
 
   if (isError || !data || !data.patient) {
-    return <WorkflowErrorState title="Visit workspace unavailable" description="The consultation could not be loaded." onRetry={() => void refetch()} />;
+    return <WorkflowErrorState title={t("visits.unavailable")} description={t("visits.unavailableDescription")} onRetry={() => void refetch()} />;
   }
 
   return (
@@ -48,12 +50,12 @@ export function VisitWorkspacePage() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="clinic-kicker">{data.visit.room}</p>
-            <h1 className="mt-1 flex items-center gap-2 text-3xl font-bold tracking-tight"><Stethoscope className="h-7 w-7 text-primary" /> Consultation workspace</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Single-page workflow for patient context, diagnosis, notes, and follow-up.</p>
+            <h1 className="mt-1 flex items-center gap-2 text-3xl font-bold tracking-tight"><Stethoscope className="h-7 w-7 text-primary" /> {t("visits.title")}</h1>
+            <p className="mt-2 text-sm text-muted-foreground">{t("visits.description")}</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button type="button" variant="outline" onClick={() => navigate(workflowRoutes.prescriptionBuilder(data.visit.id))}>
-              <FilePlus2 className="h-4 w-4" /> Generate prescription
+              <FilePlus2 className="h-4 w-4" /> {t("dashboard.actions.generatePrescription")}
             </Button>
           </div>
         </div>

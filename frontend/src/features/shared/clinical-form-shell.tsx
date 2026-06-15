@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -26,10 +27,11 @@ export function ClinicalFormShell({
   primaryDisabled,
   className
 }: ClinicalFormShellProps) {
+  const { t } = useTranslation();
   return (
     <Card className={cn("overflow-hidden", className)}>
       <CardHeader className="border-b border-border/60 bg-muted/20">
-        <p className="clinic-kicker">Clinical entry</p>
+        <p className="clinic-kicker">{t("visits.kicker")}</p>
         <CardTitle className="text-lg">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>

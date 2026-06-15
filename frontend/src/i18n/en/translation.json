@@ -1,0 +1,520 @@
+{
+  "app": {
+    "name": "Doctor Clinic",
+    "tagline": "Premium care workspace",
+    "title": "Doctor Clinic",
+    "clinic": "Clinic",
+    "workspace": "Workspace"
+  },
+  "language": {
+    "label": "Language",
+    "english": "English",
+    "arabic": "Arabic",
+    "switchTo": "Switch language to {{language}}"
+  },
+  "common": {
+    "actions": {
+      "add": "Add",
+      "back": "Back",
+      "cancel": "Cancel",
+      "close": "Close",
+      "create": "Create",
+      "delete": "Delete",
+      "dismiss": "Dismiss notification",
+      "edit": "Edit",
+      "finish": "Finish",
+      "next": "Next",
+      "open": "Open",
+      "previous": "Previous",
+      "print": "Print",
+      "retry": "Retry",
+      "save": "Save",
+      "search": "Search",
+      "view": "View"
+    },
+    "loading": "Loading clinic workflow...",
+    "saving": "Saving...",
+    "notRecorded": "Not recorded",
+    "noNotes": "No notes",
+    "operational": "Operational",
+    "pageOf": "Page {{page}} of {{total}}",
+    "active": "Active",
+    "inactive": "Inactive",
+    "yes": "Yes",
+    "no": "No",
+    "roles": {
+      "DOCTOR": "Doctor",
+      "SECRETARY": "Secretary",
+      "BOTH": "Doctor and Secretary"
+    },
+    "status": {
+      "waiting": "Waiting",
+      "scheduled": "Scheduled",
+      "open": "Open",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "draft": "Draft",
+      "issued": "Issued",
+      "no_show": "No show",
+      "paid": "Paid",
+      "pending": "Pending",
+      "void": "Void"
+    },
+    "priority": {
+      "urgent": "Urgent",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low",
+      "label": "{{priority}} priority"
+    },
+    "recordType": {
+      "patient": "Patient",
+      "appointment": "Appointment",
+      "visit": "Visit",
+      "prescription": "Prescription",
+      "waiting-patient": "Waiting patient",
+      "today-visit": "Today's visit",
+      "queue": "Queue",
+      "recent-patient": "Recent patient",
+      "upcoming-appointment": "Upcoming appointment",
+      "new-patient": "New patient",
+      "completed-visit": "Completed visit",
+      "patient-search": "Patient search",
+      "quick-action": "Quick action",
+      "note": "Note",
+      "payment": "Payment"
+    },
+    "table": {
+      "emptyTitle": "No records found",
+      "emptyDescription": "Try adjusting your filters or create a new record."
+    }
+  },
+  "navigation": {
+    "doctorDashboard": "Doctor dashboard",
+    "frontDesk": "Front desk",
+    "patients": "Patients",
+    "appointments": "Appointments",
+    "consultations": "Consultations",
+    "prescriptions": "Prescriptions",
+    "payments": "Payments",
+    "settings": "Settings",
+    "open": "Open navigation",
+    "close": "Close navigation",
+    "breadcrumb": "Breadcrumb",
+    "specTitle": "UI Kit",
+    "specDescription": "Visual system refined for daily clinic work across dashboard, patient, visit, and appointment screens."
+  },
+  "auth": {
+    "platform": "Healthcare operations platform",
+    "badge": "Calm, connected clinic workflows",
+    "heroTitle": "Better clinic days start with a clear workspace.",
+    "heroDescription": "Keep patient care, schedules, visits, and prescriptions organized in one role-aware clinic experience.",
+    "features": {
+      "clinical": "Clinical focus",
+      "schedule": "Daily schedule",
+      "protected": "Role protected"
+    },
+    "privateWorkspace": "Private clinic workspace for Doctor and Secretary teams.",
+    "secureAccess": "Secure clinic access",
+    "welcome": "Welcome back",
+    "signInDescription": "Sign in to continue to today's clinic workspace.",
+    "email": "Email",
+    "password": "Password",
+    "passwordPlaceholder": "Password",
+    "remember": "Remember me",
+    "forgot": "Forgot password?",
+    "signIn": "Sign in",
+    "signingIn": "Signing in...",
+    "permissions": "Your account permissions determine the clinic tools available after sign-in.",
+    "signedInAs": "Signed in as {{name}}",
+    "loginFailed": "Login failed",
+    "loginFallback": "Check your email and password, then try again.",
+    "signedOut": "Signed out",
+    "signedOutDescription": "Your local session has been cleared."
+  },
+  "validation": {
+    "email": "Enter a valid email address",
+    "passwordMin": "Password must be at least 8 characters",
+    "patientName": "Patient name is required",
+    "phone": "Phone number is required",
+    "clinic": "Clinic is required",
+    "choosePatient": "Choose a patient",
+    "chooseTime": "Choose a time",
+    "reason": "Reason is required",
+    "chiefComplaint": "Chief complaint is required",
+    "diagnosis": "Diagnosis is required",
+    "clinicalNotes": "Clinical notes are required",
+    "followUpNotes": "Follow-up notes are required",
+    "medicineName": "Medicine name is required",
+    "dosage": "Dosage is required",
+    "duration": "Duration is required",
+    "medicineMinimum": "Add at least one medicine",
+    "instructions": "Instructions are required"
+  },
+  "shell": {
+    "notifications": "Notifications",
+    "noNotifications": "No new notifications",
+    "noNotificationsDescription": "Notification center is ready for future workflow events.",
+    "signOut": "Sign out",
+    "search": {
+      "placeholder": "Search patients, appointments, visits",
+      "label": "Global workflow search",
+      "minimum": "Type at least 2 characters",
+      "searching": "Searching clinic records...",
+      "unavailable": "Clinic search is temporarily unavailable.",
+      "noResults": "No clinic records match \"{{query}}\"."
+    }
+  },
+  "dashboard": {
+    "doctor": {
+      "kicker": "Clinical command center",
+      "title": "Doctor dashboard",
+      "description": "Prioritize waiting patients, active consultations, and the next clinical actions.",
+      "ready": "Doctor dashboard ready",
+      "readyDescription": "Queue, analytics, and quick actions are loaded.",
+      "unavailable": "Doctor dashboard unavailable",
+      "unavailableDescription": "The clinical work queue could not be loaded.",
+      "empty": "No active work queue",
+      "emptyDescription": "There are no waiting patients or open visits right now."
+    },
+    "secretary": {
+      "kicker": "Reception command center",
+      "title": "Secretary dashboard",
+      "description": "Keep patient registration, the waiting queue, and appointments moving.",
+      "ready": "Secretary dashboard ready",
+      "readyDescription": "Reception queue, search, and quick actions are loaded.",
+      "unavailable": "Secretary dashboard unavailable",
+      "unavailableDescription": "The reception view could not be loaded.",
+      "empty": "No reception tasks",
+      "emptyDescription": "There are no appointments, registrations, or queue items right now."
+    },
+    "todayQueue": "Today's queue",
+    "todayQueueDescription": "Waiting patients and active consultations stay in the primary line of sight.",
+    "upcomingRecent": "Upcoming and recent",
+    "upcomingRecentDescription": "Secondary context for the rest of the clinic day.",
+    "analyticsNote": "Analytics remain secondary to today's clinical work.",
+    "doctorActions": "Doctor quick actions",
+    "doctorActionsDescription": "Keep the most common clinical commands one click away.",
+    "todaySchedule": "Today's schedule",
+    "todayScheduleDescription": "Waiting patients and active bookings stay visible first.",
+    "receptionOverview": "Reception overview",
+    "receptionOverviewDescription": "Fast context for new patients and completed visits.",
+    "secretaryActions": "Front desk quick actions",
+    "secretaryActionsDescription": "Register, book, and search without leaving today's reception view.",
+    "quickActions": "Quick actions",
+    "metrics": {
+      "waitingPatients": "Waiting patients",
+      "openVisits": "Open visits",
+      "todayCompleted": "Today completed",
+      "todayAppointments": "Today's appointments",
+      "newPatients": "New patients",
+      "requiresAttention": "Requires attention first",
+      "activeConsultations": "Active consultations",
+      "closedToday": "Closed today",
+      "frontDeskSchedule": "Front desk schedule",
+      "queueReady": "Queue ready",
+      "readyToRegister": "Ready to register"
+    },
+    "actions": {
+      "startVisit": "Start visit",
+      "editPatient": "Edit patient",
+      "generatePrescription": "Generate prescription",
+      "addPatient": "Add patient",
+      "bookAppointment": "Book appointment",
+      "searchPatient": "Search patient",
+      "openVisits": "Open visits",
+      "openPatients": "Open patients",
+      "newPrescription": "New prescription",
+      "moveToConsultation": "Move to the active consultation",
+      "createPatient": "Create a new patient record"
+      ,"openQueue": "Open queue"
+      ,"openVisit": "Open visit"
+      ,"continueVisit": "Continue visit"
+      ,"visitWorkspace": "Visit workspace"
+      ,"openProfile": "Open profile"
+      ,"patientProfile": "Patient profile"
+      ,"reviewSchedule": "Review schedule"
+      ,"checkIn": "Check in"
+      ,"openBooking": "Open booking"
+      ,"registerBook": "Register / book"
+      ,"registerNow": "Register now"
+      ,"reviewHistory": "Review history"
+      ,"refresh": "Refresh dashboard"
+      ,"checkWorkspace": "Check workspace"
+      ,"checkReception": "Check reception"
+      ,"registerPatient": "Register patient"
+    }
+  },
+  "patients": {
+    "kicker": "Patient directory",
+    "title": "Patients",
+    "description": "Search by name, phone, or patient code. Keep quick actions close and avoid long unstructured lists.",
+    "add": "Add patient",
+    "create": "Create patient",
+    "edit": "Edit patient",
+    "saveChanges": "Save changes",
+    "created": "Patient created",
+    "updated": "Patient updated",
+    "savedDescription": "The patient record is available across clinic workflows.",
+    "booked": "Appointment prepared",
+    "bookedDescription": "The appointment form is ready for {{name}}.",
+    "searchPlaceholder": "Search name, phone, or code",
+    "searchLabel": "Search patients",
+    "sort": "Sort",
+    "sortName": "Name",
+    "sortCode": "Patient code",
+    "sortRecent": "Most recent",
+    "unavailable": "Patients unavailable",
+    "unavailableDescription": "The patient list could not be loaded.",
+    "empty": "No patients found",
+    "emptyDescription": "Try another search term or register a new patient.",
+    "profileUnavailable": "Patient record unavailable",
+    "profileUnavailableDescription": "The patient profile could not be loaded.",
+    "profileKicker": "Patient profile",
+    "profileDescription": "Review patient identity, clinical history, appointments, prescriptions, and payments.",
+    "form": {
+      "name": "Patient name",
+      "phone": "Phone number",
+      "clinic": "Clinic",
+      "email": "Email",
+      "dateOfBirth": "Date of birth",
+      "gender": "Gender",
+      "address": "Address",
+      "addressPlaceholder": "Riyadh...",
+      "activeRecord": "Active record",
+      "activeStatus": "Active status",
+      "notes": "Notes",
+      "notesPlaceholder": "Quick clinical or reception notes",
+      "generalMedicine": "General Medicine",
+      "female": "Female"
+    },
+    "table": {
+      "patient": "Patient",
+      "phone": "Phone",
+      "clinic": "Clinic",
+      "notes": "Notes",
+      "status": "Status",
+      "actions": "Actions",
+      "book": "Book",
+      "empty": "No patients found",
+      "emptyDescription": "Try a different name, phone number, or patient code."
+    },
+    "tabs": {
+      "overview": "Overview",
+      "history": "Medical history",
+      "visits": "Visits",
+      "prescriptions": "Prescriptions",
+      "appointments": "Appointments",
+      "payments": "Payments"
+    },
+    "fields": {
+      "patientCode": "Patient code",
+      "phone": "Phone",
+      "clinic": "Clinic",
+      "dateOfBirth": "Date of birth",
+      "email": "Email",
+      "address": "Address"
+    },
+    "noHistory": "No medical history recorded.",
+    "noVisits": "No visits yet.",
+    "noPrescriptions": "No prescriptions yet.",
+    "noAppointments": "No appointments yet.",
+    "noPayments": "No payments yet.",
+    "timeline": "Timeline",
+    "timelineDescription": "Visit, prescription, appointment, and note history in chronological order.",
+    "noTimeline": "No timeline events yet."
+    ,"allergy": "Allergy: {{item}}"
+    ,"system": {
+      "appointmentWaiting": "Appointment waiting",
+      "previousVisitCompleted": "Previous visit completed",
+      "diabetesFollowUpCompleted": "Completed diabetes follow-up",
+      "prescriptionIssued": "Prescription issued",
+      "pediatricVisitCompleted": "Completed pediatric visit",
+      "waitingAppointment": "Waiting appointment",
+      "appointmentCancelled": "Appointment cancelled",
+      "patientRegistered": "Patient registered",
+      "visitCompleted": "Visit completed",
+      "appointmentBooked": "Appointment booked",
+      "appointmentUpdated": "Appointment updated",
+      "appointmentStatus": "Appointment {{status}}",
+      "consultationFee": "Consultation fee"
+    }
+  },
+  "visits": {
+    "kicker": "Visit workspace",
+    "title": "Consultation",
+    "description": "Keep the clinical entry, diagnosis, and follow-up notes visible on one page.",
+    "saveDraft": "Save draft",
+    "finishVisit": "Finish visit",
+    "saving": "Saving...",
+    "finishing": "Finishing...",
+    "saved": "Visit saved",
+    "savedDescription": "Clinical notes were updated without leaving the workspace.",
+    "completed": "Visit completed",
+    "completedDescription": "The consultation has been closed and preserved in history.",
+    "unavailable": "Visit workspace unavailable",
+    "unavailableDescription": "The consultation could not be loaded.",
+    "patientContext": "Patient context",
+    "patientContextDescription": "Essential identity and visit details remain visible while documenting care.",
+    "phone": "Phone",
+    "chiefComplaint": "Chief complaint",
+    "visitTime": "Visit time",
+    "doctor": "Doctor",
+    "prescription": "Prescription",
+    "noPrescription": "No prescription yet",
+    "openPrescription": "Open prescription builder",
+    "bloodPressure": "Blood pressure",
+    "pulse": "Pulse",
+    "temperature": "Temperature",
+    "reference": "{{field}} reference",
+    "diagnosis": "Diagnosis",
+    "clinicalNotes": "Clinical notes",
+    "followUpNotes": "Follow-up notes"
+  },
+  "prescriptions": {
+    "kicker": "Prescription workspace",
+    "title": "Prescription builder",
+    "description": "Multiple medicines, dosage, duration, notes, summary, and printable output.",
+    "backToVisit": "Back to visit",
+    "details": "Prescription details",
+    "detailsDescription": "Quick entry for the consultation room.",
+    "templates": "Common templates",
+    "generalRelief": "General relief",
+    "antibioticCourse": "Antibiotic course",
+    "instructions": "Instructions",
+    "notes": "Prescription notes",
+    "save": "Save prescription",
+    "saved": "Prescription saved",
+    "savedDescription": "Printable output is ready from stored prescription details.",
+    "unavailable": "Prescription builder unavailable",
+    "unavailableDescription": "The prescription workspace could not be loaded.",
+    "medicine": {
+      "title": "Medicines",
+      "description": "Add multiple rows with dosage, duration, and notes.",
+      "add": "Add medicine",
+      "search": "Search or type a medicine name",
+      "name": "Medicine name",
+      "namePlaceholder": "Medicine",
+      "dosage": "Dosage",
+      "dosagePlaceholder": "500mg twice daily",
+      "duration": "Duration",
+      "durationPlaceholder": "30 days",
+      "notes": "Notes",
+      "notesPlaceholder": "Take with meals",
+      "remove": "Remove medicine"
+      ,"count": "{{count}} medicine(s)"
+    },
+    "preview": {
+      "title": "Print preview",
+      "description": "Printable summary based on the stored prescription details.",
+      "empty": "Save the prescription to generate the printable output.",
+      "draft": "Draft preview",
+      "medicine": "Medicine",
+      "dosage": "Dosage",
+      "duration": "Duration",
+      "instructions": "Prescription instructions"
+      ,"readyForPrint": "Prescription ready for print"
+      ,"generated": "Printable prescription generated"
+    }
+  },
+  "appointments": {
+    "kicker": "Schedule management",
+    "title": "Appointments",
+    "description": "Keep today's queue, future bookings, completed visits, and cancellations visible.",
+    "book": "Book appointment",
+    "new": "New appointment",
+    "edit": "Edit appointment",
+    "save": "Save appointment",
+    "booked": "Appointment booked",
+    "updated": "Appointment updated",
+    "savedDescription": "The schedule and dashboard queue have been updated.",
+    "statusDescription": "Appointment marked as {{status}}.",
+    "searchPlaceholder": "Search appointment, patient, or reason",
+    "searchLabel": "Search appointments",
+    "allStatuses": "All statuses",
+    "unavailable": "Appointments unavailable",
+    "unavailableDescription": "The schedule could not be loaded.",
+    "empty": "No appointments found",
+    "emptyDescription": "Try a different search or create a new appointment.",
+    "metrics": {
+      "total": "Total",
+      "waiting": "Waiting",
+      "scheduled": "Scheduled",
+      "cancelled": "Cancelled"
+    },
+    "form": {
+      "patientId": "Patient ID",
+      "scheduledAt": "Scheduled at",
+      "reason": "Reason",
+      "reasonPlaceholder": "Follow-up visit",
+      "notes": "Notes",
+      "priority": "Priority",
+      "assignedTo": "Assigned to",
+      "role": "Role"
+    },
+    "table": {
+      "appointment": "Appointment",
+      "status": "Status",
+      "priority": "Priority",
+      "assignedTo": "Assigned to",
+      "actions": "Actions",
+      "markWaiting": "Mark waiting",
+      "complete": "Complete"
+    }
+  },
+  "settings": {
+    "kicker": "Clinic administration",
+    "title": "Settings",
+    "description": "Keep profile, clinic information, notifications, and workspace preferences in one consistent place.",
+    "save": "Save changes",
+    "saved": "Settings saved",
+    "savedDescription": "Your local clinic preferences have been updated.",
+    "tabs": {
+      "profile": "Profile",
+      "clinic": "Clinic",
+      "preferences": "Preferences"
+    },
+    "profile": {
+      "title": "Profile settings",
+      "description": "Account identity is provided by the authenticated clinic user.",
+      "fullName": "Full name",
+      "email": "Email",
+      "role": "Role",
+      "language": "Language"
+    },
+    "clinic": {
+      "title": "Clinic information",
+      "description": "Displayed on the workspace and printable clinic documents.",
+      "name": "Clinic name",
+      "phone": "Phone",
+      "address": "Address",
+      "workingHours": "Working hours",
+      "defaultAddress": "Riyadh, Saudi Arabia",
+      "protected": "Protected workspace",
+      "protectedDescription": "Doctor and Secretary permissions remain controlled by existing role access.",
+      "review": "Review access policy"
+    },
+    "preferences": {
+      "title": "Workspace preferences",
+      "description": "Adjust visual and notification behavior for daily clinic work.",
+      "queue": "Queue alerts",
+      "queueDescription": "Show a notification when a patient is waiting.",
+      "appointments": "Appointment reminders",
+      "appointmentsDescription": "Highlight appointments approaching within 30 minutes.",
+      "compact": "Compact table rows",
+      "compactDescription": "Use a denser layout for high-volume reception work."
+    }
+  },
+  "errors": {
+    "pageUnavailable": "Page unavailable",
+    "pageDescription": "The requested page could not be loaded.",
+    "return": "Return to workspace"
+  },
+  "payments": {
+    "title": "Payments",
+    "description": "Payment workflow routes are prepared for SPEC 02 implementation.",
+    "future": "Future module",
+    "notImplemented": "{{title}} content is not implemented yet",
+    "notImplementedDescription": "This route remains available inside the shared clinic shell while its detailed workflow is defined in a later specification."
+  }
+}

@@ -4,7 +4,7 @@ import type { Role } from "@/types/api";
 import { workflowRoutes } from "@/routes/workflow-routes";
 
 export type NavItem = {
-  label: string;
+  labelKey: string;
   path: string;
   icon: LucideIcon;
   roles: Role[];
@@ -13,52 +13,52 @@ export type NavItem = {
 
 export const navigationItems: NavItem[] = [
   {
-    label: "Doctor dashboard",
+    labelKey: "navigation.doctorDashboard",
     path: workflowRoutes.doctorDashboard,
     icon: LayoutDashboard,
     roles: ["DOCTOR"]
   },
   {
-    label: "Front desk",
+    labelKey: "navigation.frontDesk",
     path: workflowRoutes.secretaryDashboard,
     icon: Home,
     roles: ["SECRETARY"]
   },
   {
-    label: "Patients",
+    labelKey: "navigation.patients",
     path: workflowRoutes.patients,
     icon: Users,
     isActive: (pathname) => pathname === workflowRoutes.patients || pathname.startsWith(`${workflowRoutes.patients}/`),
     roles: ["DOCTOR", "SECRETARY"]
   },
   {
-    label: "Appointments",
+    labelKey: "navigation.appointments",
     path: workflowRoutes.appointments,
     icon: CalendarDays,
     roles: ["DOCTOR", "SECRETARY"]
   },
   {
-    label: "Consultations",
+    labelKey: "navigation.consultations",
     path: "/visits",
     icon: Stethoscope,
     isActive: (pathname) => pathname.startsWith("/visits") && !pathname.includes("/prescriptions/"),
     roles: ["DOCTOR"]
   },
   {
-    label: "Prescriptions",
+    labelKey: "navigation.prescriptions",
     path: "/prescriptions",
     icon: FileText,
     isActive: (pathname) => pathname === "/prescriptions" || pathname.includes("/prescriptions/"),
     roles: ["DOCTOR"]
   },
   {
-    label: "Payments",
+    labelKey: "navigation.payments",
     path: "/payments",
     icon: WalletCards,
     roles: ["DOCTOR", "SECRETARY"]
   },
   {
-    label: "Settings",
+    labelKey: "navigation.settings",
     path: "/settings",
     icon: Settings,
     roles: ["DOCTOR", "SECRETARY"]

@@ -1,4 +1,5 @@
 import { Activity, Printer } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { PrescriptionRecord } from "@/types/workflow";
@@ -9,6 +10,7 @@ type PrescriptionPrintPreviewProps = {
 };
 
 export function PrescriptionPrintPreview({ prescription, visitLabel }: PrescriptionPrintPreviewProps) {
+  const { t } = useTranslation();
   return (
     <Card className="overflow-hidden">
       <CardHeader className="border-b border-border/60 bg-muted/20">
@@ -16,8 +18,8 @@ export function PrescriptionPrintPreview({ prescription, visitLabel }: Prescript
           <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground"><Activity className="h-5 w-5" /></span>
           <Printer className="h-5 w-5 text-muted-foreground" />
         </div>
-        <CardTitle className="text-base">Print preview</CardTitle>
-        <CardDescription>Printable summary based on the stored prescription details.</CardDescription>
+        <CardTitle className="text-base">{t("prescriptions.preview.title")}</CardTitle>
+        <CardDescription>{t("prescriptions.preview.description")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {prescription ? (
@@ -27,7 +29,7 @@ export function PrescriptionPrintPreview({ prescription, visitLabel }: Prescript
                 <p className="text-sm text-muted-foreground">{prescription.patientName}</p>
                 <p className="text-lg font-semibold">{visitLabel}</p>
               </div>
-              <Badge variant="success">{prescription.printableLabel}</Badge>
+              <Badge variant="success">{prescription.printableLabelKey ? t(prescription.printableLabelKey) : prescription.printableLabel}</Badge>
             </div>
             <div className="space-y-3">
               {prescription.medicines.map((medicine) => (
@@ -40,12 +42,12 @@ export function PrescriptionPrintPreview({ prescription, visitLabel }: Prescript
               ))}
             </div>
             <div className="rounded-2xl border bg-muted/30 p-4">
-              <p className="text-sm font-medium">Instructions</p>
+              <p className="text-sm font-medium">{t("prescriptions.instructions")}</p>
               <p className="text-sm text-muted-foreground">{prescription.instructions}</p>
             </div>
           </>
         ) : (
-          <p className="text-sm text-muted-foreground">Save the prescription to generate the printable output.</p>
+          <p className="text-sm text-muted-foreground">{t("prescriptions.preview.empty")}</p>
         )}
       </CardContent>
     </Card>

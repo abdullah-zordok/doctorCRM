@@ -2,21 +2,24 @@ import * as React from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-const appointmentSchema = z.object({
-  patientId: z.string().min(1, "Choose a patient"),
-  scheduledAt: z.string().min(1, "Choose a time"),
-  reason: z.string().min(3, "Reason is required"),
-  notes: z.string().optional().or(z.literal("")),
-  priority: z.enum(["urgent", "high", "medium", "low"]),
-  assignedTo: z.enum(["DOCTOR", "SECRETARY", "BOTH"])
-});
+function createAppointmentSchema(t: (key: string) => string) {
+  return z.object({
+    patientId: z.string().min(1, t("validation.choosePatient")),
+    scheduledAt: z.string().min(1, t("validation.chooseTime")),
+    reason: z.string().min(3, t("validation.reason")),
+    notes: z.string().optional().or(z.literal("")),
+    priority: z.enum(["urgent", "high", "medium", "low"]),
+    assignedTo: z.enum(["DOCTOR", "SECRETARY", "BOTH"])
+  });
+}
 
-export type AppointmentFormValues = z.infer<typeof appointmentSchema>;
+export type AppointmentFormValues = z.infer<ReturnType<typeof createAppointmentSchema>>;
 
 type AppointmentFormProps = {
   onSubmit: (values: AppointmentFormValues) => void;
@@ -24,7 +27,9 @@ type AppointmentFormProps = {
   submitLabel?: string;
 };
 
-export function AppointmentForm({ onSubmit, defaultValues, submitLabel = "Save appointment" }: AppointmentFormProps) {
+export function AppointmentForm({ onSubmit, defaultValues, submitLabel }: AppointmentFormProps) {
+  const { t } = useTranslation();
+  const appointmentSchema = React.useMemo(() => createAppointmentSchema(t), [t]);
   const form = useForm<AppointmentFormValues>({
     resolver: zodResolver(appointmentSchema),
     defaultValues: {
@@ -42,54 +47,49 @@ export function AppointmentForm({ onSubmit, defaultValues, submitLabel = "Save a
   return (
     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <p className="clinic-kicker">Appointment details</p>
-        <p className="mt-1 text-sm text-muted-foreground">Schedule the patient and assign the right clinic priority.</p>
+        <p className="clinic-kicker">{t("appointments.kicker")}</p>
+        <p className="mt-1 text-sm text-muted-foreground">{t("appointments.description")}</p>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
-        <Field label="Patient ID" error={formState.errors.patientId?.message}>
+        <Field label={t("appointments.form.patientId")} error={formState.errors.patientId?.message}>
           <Input {...register("patientId")} placeholder="pat-001" />
         </Field>
-        <Field label="Scheduled at" error={formState.errors.scheduledAt?.message}>
+        <Field label={t("appointments.form.scheduledAt")} error={formState.errors.scheduledAt?.message}>
           <Input type="datetime-local" {...register("scheduledAt")} />
         </Field>
         <div className="md:col-span-2">
-          <Field label="Reason" error={formState.errors.reason?.message}>
-            <Input {...register("reason")} placeholder="Follow-up visit" />
+          <Field label={t("appointments.form.reason")} error={formState.errors.reason?.message}>
+            <Input {...register("reason")} placeholder={t("appointments.form.reasonPlaceholder")} />
           </Field>
         </div>
       </div>
-      <Field label="Notes" error={formState.errors.notes?.message}>
+      <Field label={t("appointments.form.notes")} error={formState.errors.notes?.message}>
         <textarea className="clinic-focus min-h-24 w-full rounded-xl border border-input bg-background/90 px-3.5 py-3 text-sm shadow-sm" {...register("notes")} />
       </Field>
       <div className="grid gap-4 md:grid-cols-2">
-        <Field label="Priority" error={formState.errors.priority?.message}>
+        <Field label={t("appointments.form.priority")} error={formState.errors.priority?.message}>
           <Select value={watch("priority")} onValueChange={(value) => setValue("priority", value as AppointmentFormValues["priority"], { shouldValidate: true })}>
             <SelectTrigger>
-              <SelectValue placeholder="Priority" />
+              <SelectValue placeholder={t("appointments.form.priority")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="urgent">Urgent</SelectItem>
-              <SelectItem value="high">High</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="low">Low</SelectItem>
+              {(["urgent", "high", "medium", "low"] as const).map((priority) => <SelectItem key={priority} value={priority}>{t(`common.priority.${priority}`)}</SelectItem>)}
             </SelectContent>
           </Select>
         </Field>
-        <Field label="Assigned to" error={formState.errors.assignedTo?.message}>
+        <Field label={t("appointments.form.assignedTo")} error={formState.errors.assignedTo?.message}>
           <Select value={watch("assignedTo")} onValueChange={(value) => setValue("assignedTo", value as AppointmentFormValues["assignedTo"], { shouldValidate: true })}>
             <SelectTrigger>
-              <SelectValue placeholder="Role" />
+              <SelectValue placeholder={t("appointments.form.role")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="DOCTOR">Doctor</SelectItem>
-              <SelectItem value="SECRETARY">Secretary</SelectItem>
-              <SelectItem value="BOTH">Both</SelectItem>
+              {(["DOCTOR", "SECRETARY", "BOTH"] as const).map((role) => <SelectItem key={role} value={role}>{t(`common.roles.${role}`)}</SelectItem>)}
             </SelectContent>
           </Select>
         </Field>
       </div>
       <div className="flex justify-end">
-        <Button type="submit" size="lg">{submitLabel}</Button>
+        <Button type="submit" size="lg">{submitLabel ?? t("appointments.save")}</Button>
       </div>
     </form>
   );

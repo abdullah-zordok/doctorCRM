@@ -1,5 +1,6 @@
 import * as React from "react";
 import { CalendarDays, CalendarPlus, CheckCircle2, Clock3, XCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,6 +13,7 @@ import { useNotifications } from "@/features/notifications/notifications-provide
 import { WorkflowEmptyState, WorkflowErrorState, WorkflowSkeleton } from "@/features/shared/workflow-states";
 
 export function AppointmentsPage() {
+  const { t } = useTranslation();
   const { notify } = useNotifications();
   const [search, setSearch] = React.useState("");
   const [page, setPage] = React.useState(1);
@@ -43,12 +45,12 @@ export function AppointmentsPage() {
     setEditOpen(false);
     setSelectedAppointmentId(null);
     setSelectedAppointment(null);
-    notify({ type: "success", title: selectedAppointmentId ? "Appointment updated" : "Appointment booked", description: "The schedule and dashboard queue have been updated." });
+    notify({ type: "success", title: selectedAppointmentId ? t("appointments.updated") : t("appointments.booked"), description: t("appointments.savedDescription") });
   };
 
   const handleStatusChange = async (appointment: { id: string; status: "waiting" | "scheduled" | "completed" | "cancelled" | "no_show" }, nextStatus: "waiting" | "scheduled" | "completed" | "cancelled" | "no_show") => {
     await updateStatus.mutateAsync({ appointmentId: appointment.id, status: nextStatus });
-    notify({ type: "info", title: "Appointment updated", description: `Appointment marked as ${nextStatus}.` });
+    notify({ type: "info", title: t("appointments.updated"), description: t("appointments.statusDescription", { status: t(`common.status.${nextStatus}`) }) });
   };
 
   return (
@@ -56,9 +58,9 @@ export function AppointmentsPage() {
       <section className="clinic-page-header">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div className="max-w-2xl">
-            <p className="clinic-kicker">Appointment management</p>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight">Today&apos;s schedule</h1>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">Waiting patients stay above completed items, while cancelled appointments remain visible but distinct.</p>
+            <p className="clinic-kicker">{t("appointments.kicker")}</p>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight">{t("appointments.title")}</h1>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">{t("appointments.description")}</p>
           </div>
           <Dialog
             open={editOpen}
@@ -73,15 +75,15 @@ export function AppointmentsPage() {
             <DialogTrigger asChild>
               <Button type="button">
                 <CalendarPlus className="h-4 w-4" />
-                Book appointment
+                {t("appointments.book")}
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Book appointment</DialogTitle>
-                <DialogDescription>Create or reschedule an appointment with smart defaults and validation.</DialogDescription>
+                <DialogTitle>{selectedAppointmentId ? t("appointments.edit") : t("appointments.book")}</DialogTitle>
+                <DialogDescription>{t("appointments.description")}</DialogDescription>
               </DialogHeader>
-              <AppointmentForm onSubmit={handleCreateAppointment} submitLabel="Save appointment" defaultValues={selectedAppointment ?? undefined} />
+              <AppointmentForm onSubmit={handleCreateAppointment} submitLabel={t("appointments.save")} defaultValues={selectedAppointment ?? undefined} />
             </DialogContent>
           </Dialog>
         </div>
@@ -89,10 +91,10 @@ export function AppointmentsPage() {
 
       <section className="grid gap-4 md:grid-cols-4">
         {[
-          { label: "Today's total", value: data?.total ?? 0, icon: CalendarDays },
-          { label: "Waiting", value: data?.items.filter((item) => item.status === "waiting").length ?? 0, icon: Clock3 },
-          { label: "Completed", value: data?.items.filter((item) => item.status === "completed").length ?? 0, icon: CheckCircle2 },
-          { label: "Cancelled", value: data?.items.filter((item) => item.status === "cancelled").length ?? 0, icon: XCircle }
+          { label: t("appointments.metrics.total"), value: data?.total ?? 0, icon: CalendarDays },
+          { label: t("appointments.metrics.waiting"), value: data?.items.filter((item) => item.status === "waiting").length ?? 0, icon: Clock3 },
+          { label: t("common.status.completed"), value: data?.items.filter((item) => item.status === "completed").length ?? 0, icon: CheckCircle2 },
+          { label: t("appointments.metrics.cancelled"), value: data?.items.filter((item) => item.status === "cancelled").length ?? 0, icon: XCircle }
         ].map((metric) => (
           <Card key={metric.label}>
             <CardHeader className="flex-row items-start justify-between space-y-0 pb-3">
@@ -106,23 +108,23 @@ export function AppointmentsPage() {
       <Card className="overflow-hidden">
         <CardHeader className="gap-4 border-b border-border/60 bg-muted/20 xl:flex-row xl:items-end xl:justify-between xl:space-y-0">
           <div>
-            <CardTitle className="text-base">Schedule filters</CardTitle>
-            <CardDescription className="mt-1">Keep waiting patients visible while reviewing every appointment state.</CardDescription>
+            <CardTitle className="text-base">{t("appointments.title")}</CardTitle>
+            <CardDescription className="mt-1">{t("appointments.description")}</CardDescription>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             {(["all", "waiting", "scheduled", "completed", "cancelled"] as const).map((option) => (
               <Button key={option} type="button" variant={status === option ? "default" : "outline"} size="sm" onClick={() => { setStatus(option); setPage(1); }}>
-                {option}
+                {option === "all" ? t("appointments.allStatuses") : t(`common.status.${option}`)}
               </Button>
             ))}
           </div>
         </CardHeader>
         <CardContent className="pt-5 sm:pt-6">
-          <SearchInput value={search} onChange={(event) => { setSearch(event.target.value); setPage(1); }} placeholder="Search appointment, patient, or reason" aria-label="Search appointments" />
+          <SearchInput value={search} onChange={(event) => { setSearch(event.target.value); setPage(1); }} placeholder={t("appointments.searchPlaceholder")} aria-label={t("appointments.searchLabel")} />
         </CardContent>
       </Card>
 
-      {isLoading ? <WorkflowSkeleton /> : isError ? <WorkflowErrorState title="Appointments unavailable" description="The schedule could not be loaded." onRetry={() => void refetch()} /> : data ? data.items.length ? (
+      {isLoading ? <WorkflowSkeleton /> : isError ? <WorkflowErrorState title={t("appointments.unavailable")} description={t("appointments.unavailableDescription")} onRetry={() => void refetch()} /> : data ? data.items.length ? (
         <div className="space-y-4">
           <AppointmentTable
             data={data.items}
@@ -143,7 +145,7 @@ export function AppointmentsPage() {
           <Pagination page={data.page} totalPages={data.totalPages} onPageChange={setPage} />
         </div>
       ) : (
-        <WorkflowEmptyState title="No appointments found" description="Try a different search or create a new appointment." actionLabel="Book appointment" onAction={() => setEditOpen(true)} />
+        <WorkflowEmptyState title={t("appointments.empty")} description={t("appointments.emptyDescription")} actionLabel={t("appointments.book")} onAction={() => setEditOpen(true)} />
       ) : null}
     </div>
   );

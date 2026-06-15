@@ -1,5 +1,6 @@
 import { Activity, ArrowRight, BarChart3, CalendarClock, Clock3, UserRoundCheck } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { QuickActionBar } from "@/features/shared/quick-action-bar";
@@ -9,6 +10,7 @@ import type { DashboardItem, DashboardSummary } from "@/types/workflow";
 import { cn } from "@/lib/utils";
 
 function DashboardItemCard({ item }: { item: DashboardItem }) {
+  const { t } = useTranslation();
   return (
     <Card className={cn("shadow-none transition hover:-translate-y-0.5 hover:shadow-soft", item.priority === "urgent" && "border-amber-300 bg-amber-50/65")}>
       <CardHeader className="space-y-3 p-4 sm:p-4">
@@ -20,15 +22,15 @@ function DashboardItemCard({ item }: { item: DashboardItem }) {
           <StatusChip status={item.status} />
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant={item.priority === "urgent" ? "warning" : "outline"}>{item.priority} priority</Badge>
-          <Badge variant="secondary">{item.type.replace(/-/g, " ")}</Badge>
+          <Badge variant={item.priority === "urgent" ? "warning" : "outline"}>{t("common.priority.label", { priority: t(`common.priority.${item.priority}`) })}</Badge>
+          <Badge variant="secondary">{t(`common.recordType.${item.type}`)}</Badge>
         </div>
       </CardHeader>
       <CardContent className="flex items-center justify-between gap-3 p-4 pt-0 sm:p-4 sm:pt-0">
         <span className="text-sm text-muted-foreground">{item.actionLabel}</span>
         <Link className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline" to={item.target.href}>
           {item.target.label}
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          <ArrowRight className="icon-directional h-4 w-4" aria-hidden="true" />
         </Link>
       </CardContent>
     </Card>
@@ -36,6 +38,7 @@ function DashboardItemCard({ item }: { item: DashboardItem }) {
 }
 
 export function DashboardMetrics({ summary }: { summary: DashboardSummary }) {
+  const { t } = useTranslation();
   const icons = [Clock3, Activity, UserRoundCheck];
 
   return (
@@ -55,7 +58,7 @@ export function DashboardMetrics({ summary }: { summary: DashboardSummary }) {
             </CardHeader>
             <CardContent className="pt-0">
               <Badge variant={metric.tone === "warning" ? "warning" : metric.tone === "success" ? "success" : metric.tone === "destructive" ? "destructive" : "secondary"}>
-                {metric.trend ?? "Operational"}
+                {metric.trend ?? t("common.operational")}
               </Badge>
             </CardContent>
           </Card>
@@ -76,6 +79,7 @@ export function DashboardGrid({ summary }: { summary: DashboardSummary }) {
 }
 
 export function DoctorDashboardContent({ summary }: { summary: DashboardSummary }) {
+  const { t } = useTranslation();
   const urgentItems = summary.items.filter((item) => item.priority === "urgent" || item.status === "open" || item.status === "waiting");
   const followUpItems = summary.items.filter((item) => !urgentItems.includes(item));
 
@@ -84,12 +88,12 @@ export function DoctorDashboardContent({ summary }: { summary: DashboardSummary 
       <DashboardMetrics summary={summary} />
 
       <section className="grid gap-4 xl:grid-cols-[minmax(0,1.65fr)_minmax(19rem,0.85fr)]">
-        <WorkflowSection title="Today's queue" description="Waiting patients and active consultations stay in the primary line of sight.">
+        <WorkflowSection title={t("dashboard.todayQueue")} description={t("dashboard.todayQueueDescription")}>
           <div className="grid gap-3 md:grid-cols-2">
             {(urgentItems.length ? urgentItems : summary.items.slice(0, 4)).map((item) => <DashboardItemCard key={item.id} item={item} />)}
           </div>
         </WorkflowSection>
-        <WorkflowSection title="Upcoming and recent" description="Secondary context for the rest of the clinic day.">
+        <WorkflowSection title={t("dashboard.upcomingRecent")} description={t("dashboard.upcomingRecentDescription")}>
           <div className="space-y-3">
             {followUpItems.slice(0, 4).map((item) => (
               <Link key={item.id} to={item.target.href} className="clinic-focus flex items-center gap-3 rounded-2xl border p-3 transition hover:bg-muted/60">
@@ -100,18 +104,18 @@ export function DoctorDashboardContent({ summary }: { summary: DashboardSummary 
                   <span className="block truncate text-sm font-semibold">{item.title}</span>
                   <span className="block truncate text-xs text-muted-foreground">{item.subtitle}</span>
                 </span>
-                <ArrowRight className="h-4 w-4 text-primary" />
+                <ArrowRight className="icon-directional h-4 w-4 text-primary" />
               </Link>
             ))}
             <div className="flex items-center gap-2 rounded-2xl bg-muted/50 p-3 text-xs text-muted-foreground">
               <BarChart3 className="h-4 w-4" />
-              Analytics remain secondary to today's clinical work.
+              {t("dashboard.analyticsNote")}
             </div>
           </div>
         </WorkflowSection>
       </section>
 
-      <QuickActionBar title="Doctor quick actions" description="Keep the most common clinical commands one click away." actions={summary.quickActions} />
+      <QuickActionBar title={t("dashboard.doctorActions")} description={t("dashboard.doctorActionsDescription")} actions={summary.quickActions} />
     </div>
   );
 }

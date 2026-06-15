@@ -7,7 +7,7 @@ export async function verifyDoctorDashboardPriorityScenario() {
   return {
     hasQueueFirst: firstItem?.type === "waiting-patient",
     hasUrgentPriority: firstItem?.priority === "urgent",
-    hasClinicalActions: dashboard.quickActions.some((action) => action.label === "Start visit"),
+    hasClinicalActions: dashboard.quickActions.some((action) => action.id === "qa-doctor-visit"),
     analyticsRemainSecondary: dashboard.metrics.length > 0 && dashboard.items.length > dashboard.metrics.length
   };
 }

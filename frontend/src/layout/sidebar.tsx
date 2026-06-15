@@ -1,5 +1,6 @@
 import { Activity, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/features/auth/auth-provider";
@@ -12,6 +13,7 @@ type SidebarProps = {
 };
 
 export function Sidebar({ mobileOpen, onMobileOpenChange }: SidebarProps) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const location = useLocation();
   const items = user ? getNavigationForRole(user.role) : [];
@@ -24,20 +26,20 @@ export function Sidebar({ mobileOpen, onMobileOpenChange }: SidebarProps) {
             <Activity className="h-6 w-6" aria-hidden="true" />
           </div>
           <div>
-            <p className="text-base font-bold tracking-tight">Doctor Clinic</p>
-            <p className="text-xs font-medium text-muted-foreground">Premium care workspace</p>
+            <p className="text-base font-bold tracking-tight">{t("app.name")}</p>
+            <p className="text-xs font-medium text-muted-foreground">{t("app.tagline")}</p>
           </div>
         </div>
         <Button type="button" size="icon" variant="ghost" className="lg:hidden" onClick={() => onMobileOpenChange(false)}>
           <X className="h-5 w-5" />
-          <span className="sr-only">Close navigation</span>
+          <span className="sr-only">{t("navigation.close")}</span>
         </Button>
       </div>
 
       <nav className="flex-1 space-y-1.5 overflow-y-auto px-3 py-2">
         {items.map((item) => (
           <Link
-            key={`${item.path}-${item.label}`}
+            key={`${item.path}-${item.labelKey}`}
             to={item.path}
             onClick={() => onMobileOpenChange(false)}
             className={cn(
@@ -46,7 +48,7 @@ export function Sidebar({ mobileOpen, onMobileOpenChange }: SidebarProps) {
             )}
           >
             <item.icon className="h-5 w-5" aria-hidden="true" />
-            {item.label}
+            {t(item.labelKey)}
           </Link>
         ))}
       </nav>
@@ -55,9 +57,9 @@ export function Sidebar({ mobileOpen, onMobileOpenChange }: SidebarProps) {
         <div className="rounded-2xl bg-secondary/80 p-4">
           <div className="flex items-center justify-between gap-3">
             <p className="text-sm font-semibold text-secondary-foreground">SPEC 03</p>
-            <Badge variant="secondary">UI Kit</Badge>
+            <Badge variant="secondary">{t("navigation.specTitle")}</Badge>
           </div>
-          <p className="mt-2 text-xs leading-5 text-secondary-foreground/80">Visual system refined for daily clinic work across dashboard, patient, visit, and appointment screens.</p>
+          <p className="mt-2 text-xs leading-5 text-secondary-foreground/80">{t("navigation.specDescription")}</p>
         </div>
       </div>
     </div>
@@ -65,11 +67,11 @@ export function Sidebar({ mobileOpen, onMobileOpenChange }: SidebarProps) {
 
   return (
     <>
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r border-border/70 bg-card/95 backdrop-blur lg:block">{content}</aside>
+      <aside className="fixed inset-y-0 start-0 z-40 hidden w-72 border-e border-border/70 bg-card/95 backdrop-blur lg:block">{content}</aside>
       {mobileOpen ? (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <button type="button" aria-label="Close navigation" className="absolute inset-0 bg-slate-950/40" onClick={() => onMobileOpenChange(false)} />
-          <aside className="relative h-full w-[min(22rem,85vw)] border-r bg-card shadow-soft">{content}</aside>
+          <button type="button" aria-label={t("navigation.close")} className="absolute inset-0 bg-slate-950/40" onClick={() => onMobileOpenChange(false)} />
+          <aside className="relative h-full w-[min(22rem,85vw)] border-e bg-card shadow-soft">{content}</aside>
         </div>
       ) : null}
     </>

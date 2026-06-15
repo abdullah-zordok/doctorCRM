@@ -1,0 +1,520 @@
+{
+  "app": {
+    "name": "عيادة الطبيب",
+    "tagline": "مساحة رعاية متكاملة",
+    "title": "عيادة الطبيب",
+    "clinic": "العيادة",
+    "workspace": "مساحة العمل"
+  },
+  "language": {
+    "label": "اللغة",
+    "english": "الإنجليزية",
+    "arabic": "العربية",
+    "switchTo": "تغيير اللغة إلى {{language}}"
+  },
+  "common": {
+    "actions": {
+      "add": "إضافة",
+      "back": "رجوع",
+      "cancel": "إلغاء",
+      "close": "إغلاق",
+      "create": "إنشاء",
+      "delete": "حذف",
+      "dismiss": "إخفاء الإشعار",
+      "edit": "تعديل",
+      "finish": "إنهاء",
+      "next": "التالي",
+      "open": "فتح",
+      "previous": "السابق",
+      "print": "طباعة",
+      "retry": "إعادة المحاولة",
+      "save": "حفظ",
+      "search": "بحث",
+      "view": "عرض"
+    },
+    "loading": "جارٍ تحميل سير عمل العيادة...",
+    "saving": "جارٍ الحفظ...",
+    "notRecorded": "غير مسجل",
+    "noNotes": "لا توجد ملاحظات",
+    "operational": "تشغيلي",
+    "pageOf": "الصفحة {{page}} من {{total}}",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "yes": "نعم",
+    "no": "لا",
+    "roles": {
+      "DOCTOR": "الطبيب",
+      "SECRETARY": "السكرتير",
+      "BOTH": "الطبيب والسكرتير"
+    },
+    "status": {
+      "waiting": "في الانتظار",
+      "scheduled": "مجدول",
+      "open": "مفتوح",
+      "completed": "مكتمل",
+      "cancelled": "ملغي",
+      "draft": "مسودة",
+      "issued": "صادرة",
+      "no_show": "لم يحضر",
+      "paid": "مدفوع",
+      "pending": "قيد الانتظار",
+      "void": "ملغى"
+    },
+    "priority": {
+      "urgent": "عاجلة",
+      "high": "عالية",
+      "medium": "متوسطة",
+      "low": "منخفضة",
+      "label": "أولوية {{priority}}"
+    },
+    "recordType": {
+      "patient": "مريض",
+      "appointment": "موعد",
+      "visit": "زيارة",
+      "prescription": "وصفة طبية",
+      "waiting-patient": "مريض منتظر",
+      "today-visit": "زيارة اليوم",
+      "queue": "قائمة الانتظار",
+      "recent-patient": "مريض حديث",
+      "upcoming-appointment": "موعد قادم",
+      "new-patient": "مريض جديد",
+      "completed-visit": "زيارة مكتملة",
+      "patient-search": "بحث المرضى",
+      "quick-action": "إجراء سريع",
+      "note": "ملاحظة",
+      "payment": "دفعة"
+    },
+    "table": {
+      "emptyTitle": "لا توجد سجلات",
+      "emptyDescription": "عدّل عوامل التصفية أو أنشئ سجلاً جديداً."
+    }
+  },
+  "navigation": {
+    "doctorDashboard": "لوحة الطبيب",
+    "frontDesk": "الاستقبال",
+    "patients": "المرضى",
+    "appointments": "المواعيد",
+    "consultations": "الاستشارات",
+    "prescriptions": "الوصفات الطبية",
+    "payments": "المدفوعات",
+    "settings": "الإعدادات",
+    "open": "فتح قائمة التنقل",
+    "close": "إغلاق قائمة التنقل",
+    "breadcrumb": "مسار التنقل",
+    "specTitle": "حزمة الواجهة",
+    "specDescription": "نظام بصري محسّن للعمل اليومي في لوحات التحكم وشاشات المرضى والزيارات والمواعيد."
+  },
+  "auth": {
+    "platform": "منصة إدارة عمليات الرعاية الصحية",
+    "badge": "سير عمل هادئ ومترابط للعيادة",
+    "heroTitle": "يبدأ يوم العيادة الأفضل بمساحة عمل واضحة.",
+    "heroDescription": "نظّم رعاية المرضى والجداول والزيارات والوصفات في تجربة واحدة تراعي صلاحيات المستخدم.",
+    "features": {
+      "clinical": "تركيز سريري",
+      "schedule": "جدول يومي",
+      "protected": "صلاحيات محمية"
+    },
+    "privateWorkspace": "مساحة عمل خاصة لفرق الأطباء والسكرتارية.",
+    "secureAccess": "دخول آمن للعيادة",
+    "welcome": "مرحباً بعودتك",
+    "signInDescription": "سجّل الدخول للمتابعة إلى مساحة عمل العيادة اليوم.",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "كلمة المرور",
+    "remember": "تذكرني",
+    "forgot": "نسيت كلمة المرور؟",
+    "signIn": "تسجيل الدخول",
+    "signingIn": "جارٍ تسجيل الدخول...",
+    "permissions": "تحدد صلاحيات حسابك أدوات العيادة المتاحة بعد تسجيل الدخول.",
+    "signedInAs": "تم تسجيل الدخول باسم {{name}}",
+    "loginFailed": "فشل تسجيل الدخول",
+    "loginFallback": "تحقق من البريد الإلكتروني وكلمة المرور ثم حاول مرة أخرى.",
+    "signedOut": "تم تسجيل الخروج",
+    "signedOutDescription": "تم مسح جلستك المحلية."
+  },
+  "validation": {
+    "email": "أدخل بريداً إلكترونياً صحيحاً",
+    "passwordMin": "يجب ألا تقل كلمة المرور عن 8 أحرف",
+    "patientName": "اسم المريض مطلوب",
+    "phone": "رقم الهاتف مطلوب",
+    "clinic": "العيادة مطلوبة",
+    "choosePatient": "اختر مريضاً",
+    "chooseTime": "اختر وقتاً",
+    "reason": "سبب الموعد مطلوب",
+    "chiefComplaint": "الشكوى الرئيسية مطلوبة",
+    "diagnosis": "التشخيص مطلوب",
+    "clinicalNotes": "الملاحظات السريرية مطلوبة",
+    "followUpNotes": "ملاحظات المتابعة مطلوبة",
+    "medicineName": "اسم الدواء مطلوب",
+    "dosage": "الجرعة مطلوبة",
+    "duration": "المدة مطلوبة",
+    "medicineMinimum": "أضف دواءً واحداً على الأقل",
+    "instructions": "التعليمات مطلوبة"
+  },
+  "shell": {
+    "notifications": "الإشعارات",
+    "noNotifications": "لا توجد إشعارات جديدة",
+    "noNotificationsDescription": "مركز الإشعارات جاهز لأحداث سير العمل القادمة.",
+    "signOut": "تسجيل الخروج",
+    "search": {
+      "placeholder": "ابحث عن المرضى والمواعيد والزيارات",
+      "label": "البحث الشامل في سير العمل",
+      "minimum": "اكتب حرفين على الأقل",
+      "searching": "جارٍ البحث في سجلات العيادة...",
+      "unavailable": "بحث العيادة غير متاح مؤقتاً.",
+      "noResults": "لا توجد سجلات تطابق \"{{query}}\"."
+    }
+  },
+  "dashboard": {
+    "doctor": {
+      "kicker": "مركز القيادة السريري",
+      "title": "لوحة الطبيب",
+      "description": "رتّب المرضى المنتظرين والاستشارات النشطة والإجراءات السريرية التالية حسب الأولوية.",
+      "ready": "لوحة الطبيب جاهزة",
+      "readyDescription": "تم تحميل قائمة الانتظار والتحليلات والإجراءات السريعة.",
+      "unavailable": "لوحة الطبيب غير متاحة",
+      "unavailableDescription": "تعذر تحميل قائمة العمل السريرية.",
+      "empty": "لا توجد مهام سريرية نشطة",
+      "emptyDescription": "لا يوجد مرضى منتظرون أو زيارات مفتوحة حالياً."
+    },
+    "secretary": {
+      "kicker": "مركز قيادة الاستقبال",
+      "title": "لوحة السكرتير",
+      "description": "تابع تسجيل المرضى وقائمة الانتظار والمواعيد بسلاسة.",
+      "ready": "لوحة السكرتير جاهزة",
+      "readyDescription": "تم تحميل قائمة الاستقبال والبحث والإجراءات السريعة.",
+      "unavailable": "لوحة السكرتير غير متاحة",
+      "unavailableDescription": "تعذر تحميل واجهة الاستقبال.",
+      "empty": "لا توجد مهام استقبال",
+      "emptyDescription": "لا توجد مواعيد أو تسجيلات أو عناصر انتظار حالياً."
+    },
+    "todayQueue": "قائمة انتظار اليوم",
+    "todayQueueDescription": "يبقى المرضى المنتظرون والاستشارات النشطة في مقدمة المشهد.",
+    "upcomingRecent": "القادم والحديث",
+    "upcomingRecentDescription": "سياق إضافي لبقية يوم العيادة.",
+    "analyticsNote": "تبقى التحليلات ثانوية أمام العمل السريري اليومي.",
+    "doctorActions": "إجراءات الطبيب السريعة",
+    "doctorActionsDescription": "اجعل الأوامر السريرية الأكثر استخداماً على بُعد نقرة.",
+    "todaySchedule": "جدول اليوم",
+    "todayScheduleDescription": "يظهر المرضى المنتظرون والحجوزات النشطة أولاً.",
+    "receptionOverview": "نظرة عامة على الاستقبال",
+    "receptionOverviewDescription": "سياق سريع للمرضى الجدد والزيارات المكتملة.",
+    "secretaryActions": "إجراءات الاستقبال السريعة",
+    "secretaryActionsDescription": "سجّل واحجز وابحث دون مغادرة واجهة الاستقبال اليومية.",
+    "quickActions": "إجراءات سريعة",
+    "metrics": {
+      "waitingPatients": "المرضى المنتظرون",
+      "openVisits": "الزيارات المفتوحة",
+      "todayCompleted": "المكتمل اليوم",
+      "todayAppointments": "مواعيد اليوم",
+      "newPatients": "المرضى الجدد",
+      "requiresAttention": "تتطلب الاهتمام أولاً",
+      "activeConsultations": "استشارات نشطة",
+      "closedToday": "أُغلقت اليوم",
+      "frontDeskSchedule": "جدول الاستقبال",
+      "queueReady": "قائمة الانتظار جاهزة",
+      "readyToRegister": "جاهزون للتسجيل"
+    },
+    "actions": {
+      "startVisit": "بدء الزيارة",
+      "editPatient": "تعديل المريض",
+      "generatePrescription": "إنشاء وصفة",
+      "addPatient": "إضافة مريض",
+      "bookAppointment": "حجز موعد",
+      "searchPatient": "البحث عن مريض",
+      "openVisits": "فتح الزيارات",
+      "openPatients": "فتح المرضى",
+      "newPrescription": "وصفة جديدة",
+      "moveToConsultation": "الانتقال إلى الاستشارة النشطة",
+      "createPatient": "إنشاء سجل مريض جديد"
+      ,"openQueue": "فتح قائمة الانتظار"
+      ,"openVisit": "فتح الزيارة"
+      ,"continueVisit": "متابعة الزيارة"
+      ,"visitWorkspace": "مساحة عمل الزيارة"
+      ,"openProfile": "فتح الملف"
+      ,"patientProfile": "ملف المريض"
+      ,"reviewSchedule": "مراجعة الجدول"
+      ,"checkIn": "تسجيل الوصول"
+      ,"openBooking": "فتح الحجز"
+      ,"registerBook": "تسجيل / حجز"
+      ,"registerNow": "التسجيل الآن"
+      ,"reviewHistory": "مراجعة السجل"
+      ,"refresh": "تحديث لوحة التحكم"
+      ,"checkWorkspace": "فحص مساحة العمل"
+      ,"checkReception": "فحص الاستقبال"
+      ,"registerPatient": "تسجيل مريض"
+    }
+  },
+  "patients": {
+    "kicker": "دليل المرضى",
+    "title": "المرضى",
+    "description": "ابحث بالاسم أو الهاتف أو رمز المريض، مع إبقاء الإجراءات السريعة قريبة.",
+    "add": "إضافة مريض",
+    "create": "إنشاء مريض",
+    "edit": "تعديل المريض",
+    "saveChanges": "حفظ التغييرات",
+    "created": "تم إنشاء المريض",
+    "updated": "تم تحديث المريض",
+    "savedDescription": "أصبح سجل المريض متاحاً في جميع مسارات عمل العيادة.",
+    "booked": "تم تجهيز الموعد",
+    "bookedDescription": "نموذج الموعد جاهز للمريض {{name}}.",
+    "searchPlaceholder": "ابحث بالاسم أو الهاتف أو الرمز",
+    "searchLabel": "بحث المرضى",
+    "sort": "ترتيب",
+    "sortName": "الاسم",
+    "sortCode": "رمز المريض",
+    "sortRecent": "الأحدث",
+    "unavailable": "المرضى غير متاحين",
+    "unavailableDescription": "تعذر تحميل قائمة المرضى.",
+    "empty": "لم يتم العثور على مرضى",
+    "emptyDescription": "جرّب عبارة بحث أخرى أو سجّل مريضاً جديداً.",
+    "profileUnavailable": "سجل المريض غير متاح",
+    "profileUnavailableDescription": "تعذر تحميل ملف المريض.",
+    "profileKicker": "ملف المريض",
+    "profileDescription": "راجع هوية المريض وتاريخه السريري ومواعيده ووصفاته ومدفوعاته.",
+    "form": {
+      "name": "اسم المريض",
+      "phone": "رقم الهاتف",
+      "clinic": "العيادة",
+      "email": "البريد الإلكتروني",
+      "dateOfBirth": "تاريخ الميلاد",
+      "gender": "الجنس",
+      "address": "العنوان",
+      "addressPlaceholder": "الرياض...",
+      "activeRecord": "سجل نشط",
+      "activeStatus": "حالة النشاط",
+      "notes": "الملاحظات",
+      "notesPlaceholder": "ملاحظات سريرية أو إدارية سريعة",
+      "generalMedicine": "الطب العام",
+      "female": "أنثى"
+    },
+    "table": {
+      "patient": "المريض",
+      "phone": "الهاتف",
+      "clinic": "العيادة",
+      "notes": "الملاحظات",
+      "status": "الحالة",
+      "actions": "الإجراءات",
+      "book": "حجز",
+      "empty": "لم يتم العثور على مرضى",
+      "emptyDescription": "جرّب اسماً أو رقم هاتف أو رمز مريض مختلفاً."
+    },
+    "tabs": {
+      "overview": "نظرة عامة",
+      "history": "التاريخ الطبي",
+      "visits": "الزيارات",
+      "prescriptions": "الوصفات",
+      "appointments": "المواعيد",
+      "payments": "المدفوعات"
+    },
+    "fields": {
+      "patientCode": "رمز المريض",
+      "phone": "الهاتف",
+      "clinic": "العيادة",
+      "dateOfBirth": "تاريخ الميلاد",
+      "email": "البريد الإلكتروني",
+      "address": "العنوان"
+    },
+    "noHistory": "لا يوجد تاريخ طبي مسجل.",
+    "noVisits": "لا توجد زيارات بعد.",
+    "noPrescriptions": "لا توجد وصفات بعد.",
+    "noAppointments": "لا توجد مواعيد بعد.",
+    "noPayments": "لا توجد مدفوعات بعد.",
+    "timeline": "التسلسل الزمني",
+    "timelineDescription": "سجل الزيارات والوصفات والمواعيد والملاحظات مرتباً زمنياً.",
+    "noTimeline": "لا توجد أحداث في التسلسل الزمني بعد."
+    ,"allergy": "حساسية: {{item}}"
+    ,"system": {
+      "appointmentWaiting": "الموعد في الانتظار",
+      "previousVisitCompleted": "اكتملت الزيارة السابقة",
+      "diabetesFollowUpCompleted": "اكتملت متابعة السكري",
+      "prescriptionIssued": "صدرت الوصفة الطبية",
+      "pediatricVisitCompleted": "اكتملت زيارة الأطفال",
+      "waitingAppointment": "موعد منتظر",
+      "appointmentCancelled": "أُلغي الموعد",
+      "patientRegistered": "تم تسجيل المريض",
+      "visitCompleted": "اكتملت الزيارة",
+      "appointmentBooked": "تم حجز الموعد",
+      "appointmentUpdated": "تم تحديث الموعد",
+      "appointmentStatus": "الموعد {{status}}",
+      "consultationFee": "رسوم الاستشارة"
+    }
+  },
+  "visits": {
+    "kicker": "مساحة عمل الزيارة",
+    "title": "الاستشارة",
+    "description": "أبقِ الإدخال السريري والتشخيص وملاحظات المتابعة ظاهرة في صفحة واحدة.",
+    "saveDraft": "حفظ المسودة",
+    "finishVisit": "إنهاء الزيارة",
+    "saving": "جارٍ الحفظ...",
+    "finishing": "جارٍ الإنهاء...",
+    "saved": "تم حفظ الزيارة",
+    "savedDescription": "تم تحديث الملاحظات السريرية دون مغادرة مساحة العمل.",
+    "completed": "تم إكمال الزيارة",
+    "completedDescription": "أُغلقت الاستشارة وحُفظت في السجل.",
+    "unavailable": "مساحة عمل الزيارة غير متاحة",
+    "unavailableDescription": "تعذر تحميل الاستشارة.",
+    "patientContext": "سياق المريض",
+    "patientContextDescription": "تبقى بيانات الهوية والزيارة الأساسية ظاهرة أثناء توثيق الرعاية.",
+    "phone": "الهاتف",
+    "chiefComplaint": "الشكوى الرئيسية",
+    "visitTime": "وقت الزيارة",
+    "doctor": "الطبيب",
+    "prescription": "الوصفة",
+    "noPrescription": "لا توجد وصفة بعد",
+    "openPrescription": "فتح منشئ الوصفة",
+    "bloodPressure": "ضغط الدم",
+    "pulse": "النبض",
+    "temperature": "درجة الحرارة",
+    "reference": "مرجع {{field}}",
+    "diagnosis": "التشخيص",
+    "clinicalNotes": "الملاحظات السريرية",
+    "followUpNotes": "ملاحظات المتابعة"
+  },
+  "prescriptions": {
+    "kicker": "مساحة عمل الوصفات",
+    "title": "منشئ الوصفة الطبية",
+    "description": "أدوية متعددة وجرعات ومدد وملاحظات وملخص ومخرجات قابلة للطباعة.",
+    "backToVisit": "العودة إلى الزيارة",
+    "details": "تفاصيل الوصفة",
+    "detailsDescription": "إدخال سريع داخل غرفة الاستشارة.",
+    "templates": "قوالب شائعة",
+    "generalRelief": "تخفيف عام",
+    "antibioticCourse": "دورة مضاد حيوي",
+    "instructions": "التعليمات",
+    "notes": "ملاحظات الوصفة",
+    "save": "حفظ الوصفة",
+    "saved": "تم حفظ الوصفة",
+    "savedDescription": "المخرجات القابلة للطباعة جاهزة من تفاصيل الوصفة المحفوظة.",
+    "unavailable": "منشئ الوصفة غير متاح",
+    "unavailableDescription": "تعذر تحميل مساحة عمل الوصفة.",
+    "medicine": {
+      "title": "الأدوية",
+      "description": "أضف عدة صفوف للجرعة والمدة والملاحظات.",
+      "add": "إضافة دواء",
+      "search": "ابحث عن دواء أو اكتب اسمه",
+      "name": "اسم الدواء",
+      "namePlaceholder": "الدواء",
+      "dosage": "الجرعة",
+      "dosagePlaceholder": "500 ملغ مرتين يومياً",
+      "duration": "المدة",
+      "durationPlaceholder": "30 يوماً",
+      "notes": "الملاحظات",
+      "notesPlaceholder": "يؤخذ مع الطعام",
+      "remove": "إزالة الدواء"
+      ,"count": "{{count}} دواء"
+    },
+    "preview": {
+      "title": "معاينة الطباعة",
+      "description": "ملخص قابل للطباعة مبني على تفاصيل الوصفة المحفوظة.",
+      "empty": "احفظ الوصفة لإنشاء المخرجات القابلة للطباعة.",
+      "draft": "معاينة مسودة",
+      "medicine": "الدواء",
+      "dosage": "الجرعة",
+      "duration": "المدة",
+      "instructions": "تعليمات الوصفة"
+      ,"readyForPrint": "الوصفة جاهزة للطباعة"
+      ,"generated": "تم إنشاء وصفة قابلة للطباعة"
+    }
+  },
+  "appointments": {
+    "kicker": "إدارة الجدول",
+    "title": "المواعيد",
+    "description": "أبقِ قائمة اليوم والحجوزات القادمة والزيارات المكتملة والإلغاءات ظاهرة.",
+    "book": "حجز موعد",
+    "new": "موعد جديد",
+    "edit": "تعديل الموعد",
+    "save": "حفظ الموعد",
+    "booked": "تم حجز الموعد",
+    "updated": "تم تحديث الموعد",
+    "savedDescription": "تم تحديث الجدول وقائمة لوحة التحكم.",
+    "statusDescription": "تم تغيير حالة الموعد إلى {{status}}.",
+    "searchPlaceholder": "ابحث عن موعد أو مريض أو سبب",
+    "searchLabel": "بحث المواعيد",
+    "allStatuses": "كل الحالات",
+    "unavailable": "المواعيد غير متاحة",
+    "unavailableDescription": "تعذر تحميل الجدول.",
+    "empty": "لم يتم العثور على مواعيد",
+    "emptyDescription": "جرّب بحثاً مختلفاً أو أنشئ موعداً جديداً.",
+    "metrics": {
+      "total": "الإجمالي",
+      "waiting": "الانتظار",
+      "scheduled": "المجدولة",
+      "cancelled": "الملغاة"
+    },
+    "form": {
+      "patientId": "معرّف المريض",
+      "scheduledAt": "الوقت المجدول",
+      "reason": "السبب",
+      "reasonPlaceholder": "زيارة متابعة",
+      "notes": "الملاحظات",
+      "priority": "الأولوية",
+      "assignedTo": "مسند إلى",
+      "role": "الدور"
+    },
+    "table": {
+      "appointment": "الموعد",
+      "status": "الحالة",
+      "priority": "الأولوية",
+      "assignedTo": "مسند إلى",
+      "actions": "الإجراءات",
+      "markWaiting": "تعيين كمنتظر",
+      "complete": "إكمال"
+    }
+  },
+  "settings": {
+    "kicker": "إدارة العيادة",
+    "title": "الإعدادات",
+    "description": "اجمع الملف الشخصي وبيانات العيادة والإشعارات وتفضيلات مساحة العمل في مكان واحد.",
+    "save": "حفظ التغييرات",
+    "saved": "تم حفظ الإعدادات",
+    "savedDescription": "تم تحديث تفضيلات العيادة المحلية.",
+    "tabs": {
+      "profile": "الملف الشخصي",
+      "clinic": "العيادة",
+      "preferences": "التفضيلات"
+    },
+    "profile": {
+      "title": "إعدادات الملف الشخصي",
+      "description": "هوية الحساب مقدمة من مستخدم العيادة المصادق عليه.",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "role": "الدور",
+      "language": "اللغة"
+    },
+    "clinic": {
+      "title": "بيانات العيادة",
+      "description": "تظهر في مساحة العمل ومستندات العيادة القابلة للطباعة.",
+      "name": "اسم العيادة",
+      "phone": "الهاتف",
+      "address": "العنوان",
+      "workingHours": "ساعات العمل",
+      "defaultAddress": "الرياض، المملكة العربية السعودية",
+      "protected": "مساحة عمل محمية",
+      "protectedDescription": "تظل صلاحيات الطبيب والسكرتير خاضعة للتحكم الحالي في الوصول.",
+      "review": "مراجعة سياسة الوصول"
+    },
+    "preferences": {
+      "title": "تفضيلات مساحة العمل",
+      "description": "اضبط السلوك المرئي والإشعارات للعمل اليومي في العيادة.",
+      "queue": "تنبيهات قائمة الانتظار",
+      "queueDescription": "إظهار إشعار عند انتظار مريض.",
+      "appointments": "تذكيرات المواعيد",
+      "appointmentsDescription": "تمييز المواعيد التي تبدأ خلال 30 دقيقة.",
+      "compact": "صفوف جداول مدمجة",
+      "compactDescription": "استخدام تخطيط أكثر كثافة لأعمال الاستقبال مرتفعة الحجم."
+    }
+  },
+  "errors": {
+    "pageUnavailable": "الصفحة غير متاحة",
+    "pageDescription": "تعذر تحميل الصفحة المطلوبة.",
+    "return": "العودة إلى مساحة العمل"
+  },
+  "payments": {
+    "title": "المدفوعات",
+    "description": "مسارات عمل المدفوعات مجهزة للتنفيذ في المواصفة 02.",
+    "future": "وحدة مستقبلية",
+    "notImplemented": "محتوى {{title}} غير منفذ بعد",
+    "notImplementedDescription": "يبقى هذا المسار متاحاً داخل هيكل العيادة المشترك حتى تُحدد تفاصيله في مواصفة لاحقة."
+  }
+}

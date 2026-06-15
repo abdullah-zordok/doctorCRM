@@ -18,7 +18,7 @@ export function verifyWorkflowRouteSmokeExpectations() {
   return {
     doctorHasClinicalRoutes: doctorNav.includes(workflowRoutes.doctorDashboard) && doctorNav.includes("/visits") && doctorNav.includes("/prescriptions"),
     secretaryHasReceptionRoutes: secretaryNav.includes(workflowRoutes.secretaryDashboard) && secretaryNav.includes(workflowRoutes.patients),
-    nestedPatientRouteMatches: getNavigationItem(workflowRoutes.patientProfile("pat-001"))?.label === "Patients",
-    prescriptionRouteMatches: getNavigationItem(workflowRoutes.prescriptionBuilder("vis-001"))?.label === "Prescriptions"
+    nestedPatientRouteMatches: getNavigationItem(workflowRoutes.patientProfile("pat-001"))?.labelKey === "navigation.patients",
+    prescriptionRouteMatches: getNavigationItem(workflowRoutes.prescriptionBuilder("vis-001"))?.labelKey === "navigation.prescriptions"
   };
 }

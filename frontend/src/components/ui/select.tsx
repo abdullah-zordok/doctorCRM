@@ -31,8 +31,8 @@ export function SelectContent({ className, children, ...props }: SelectPrimitive
 
 export function SelectItem({ className, children, ...props }: SelectPrimitive.SelectItemProps) {
   return (
-    <SelectPrimitive.Item className={cn("clinic-focus relative flex cursor-pointer select-none items-center rounded-sm py-2 pl-8 pr-2 text-sm outline-none hover:bg-muted", className)} {...props}>
-      <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+    <SelectPrimitive.Item className={cn("clinic-focus relative flex cursor-pointer select-none items-center rounded-sm py-2 ps-8 pe-2 text-sm outline-none hover:bg-muted", className)} {...props}>
+      <span className="absolute start-2 flex h-3.5 w-3.5 items-center justify-center">
         <SelectPrimitive.ItemIndicator>
           <Check className="h-4 w-4" />
         </SelectPrimitive.ItemIndicator>

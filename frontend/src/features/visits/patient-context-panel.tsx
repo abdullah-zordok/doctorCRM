@@ -3,8 +3,10 @@ import { CalendarDays, ClipboardList, FileText, Phone, UserRound } from "lucide-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 import { StatusChip } from "@/features/shared/status-chip";
 import { workflowRoutes } from "@/routes/workflow-routes";
+import { formatDateTime } from "@/i18n/format";
 import type { PatientProfile, PrescriptionRecord, VisitRecord } from "@/types/workflow";
 
 type PatientContextPanelProps = {
@@ -14,6 +16,7 @@ type PatientContextPanelProps = {
 };
 
 export function PatientContextPanel({ patient, visit, prescription }: PatientContextPanelProps) {
+  const { t, i18n } = useTranslation();
   return (
     <Card className="overflow-hidden">
       <CardHeader className="border-b border-border/60 bg-muted/20">
@@ -34,23 +37,23 @@ export function PatientContextPanel({ patient, visit, prescription }: PatientCon
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid gap-3 md:grid-cols-2">
-          <InfoRow icon={Phone} label="Phone" value={patient.phone} />
-          <InfoRow icon={ClipboardList} label="Chief complaint" value={visit.chiefComplaint} />
-          <InfoRow icon={CalendarDays} label="Visit time" value={new Date(visit.visitDate).toLocaleString()} />
-          <InfoRow icon={UserRound} label="Doctor" value={visit.doctorName} />
+          <InfoRow icon={Phone} label={t("visits.phone")} value={patient.phone} />
+          <InfoRow icon={ClipboardList} label={t("visits.chiefComplaint")} value={visit.chiefComplaint} />
+          <InfoRow icon={CalendarDays} label={t("visits.visitTime")} value={formatDateTime(visit.visitDate, i18n.resolvedLanguage ?? i18n.language)} />
+          <InfoRow icon={UserRound} label={t("visits.doctor")} value={visit.doctorName} />
         </div>
 
         <div className="flex flex-wrap gap-2">
           <Button asChild variant="soft" size="sm">
-            <Link to={workflowRoutes.patientProfile(patient.id)}>Open patient profile</Link>
+            <Link to={workflowRoutes.patientProfile(patient.id)}>{t("common.actions.open")} {t("patients.profileKicker")}</Link>
           </Button>
           <Button asChild variant="soft" size="sm">
             <Link to={workflowRoutes.prescriptionBuilder(visit.id)}>
               <FileText className="h-4 w-4" />
-              Prescription builder
+              {t("prescriptions.title")}
             </Link>
           </Button>
-          {prescription ? <Badge variant="success">{prescription.printableLabel}</Badge> : <Badge variant="secondary">No prescription yet</Badge>}
+          {prescription ? <Badge variant="success">{prescription.printableLabelKey ? t(prescription.printableLabelKey) : prescription.printableLabel}</Badge> : <Badge variant="secondary">{t("visits.noPrescription")}</Badge>}
         </div>
       </CardContent>
     </Card>

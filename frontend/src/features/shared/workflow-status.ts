@@ -19,17 +19,6 @@ const statusOrder: Record<WorkflowStatus, number> = {
   no_show: 7
 };
 
-const statusLabels: Record<WorkflowStatus, string> = {
-  waiting: "Waiting",
-  scheduled: "Scheduled",
-  open: "Open",
-  completed: "Completed",
-  cancelled: "Cancelled",
-  draft: "Draft",
-  issued: "Issued",
-  no_show: "No show"
-};
-
 const statusVariants: Record<WorkflowStatus, NonNullable<BadgeProps["variant"]>> = {
   waiting: "warning",
   scheduled: "secondary",
@@ -47,10 +36,6 @@ export function getPriorityRank(priority: DashboardPriority) {
 
 export function getStatusRank(status: WorkflowStatus) {
   return statusOrder[status];
-}
-
-export function getStatusLabel(status: WorkflowStatus) {
-  return statusLabels[status];
 }
 
 export function getStatusVariant(status: WorkflowStatus): NonNullable<BadgeProps["variant"]> {
