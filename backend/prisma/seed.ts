@@ -8,6 +8,29 @@ import {
 } from "@prisma/client";
 import { prisma } from "../src/lib/prisma";
 
+export async function seedDoctor() {
+  const email = (process.env.SEED_DOCTOR_EMAIL || "doctor@example.com").trim().toLowerCase();
+  const password = process.env.SEED_DOCTOR_PASSWORD || "ChangeMe123!";
+  const name = (process.env.SEED_DOCTOR_NAME || "د. أحمد خليل - Dr. Ahmed Khalil").trim();
+  const passwordHash = await bcrypt.hash(password, 12);
+
+  return prisma.user.upsert({
+    where: { email },
+    update: {
+      name,
+      role: Role.DOCTOR,
+      isActive: true
+    },
+    create: {
+      email,
+      name,
+      passwordHash,
+      role: Role.DOCTOR,
+      isActive: true
+    }
+  });
+}
+
 export async function seed() {
   console.log("🌱 Starting database seeding...");
 
@@ -32,23 +55,7 @@ export async function seed() {
 
   // 2. Seed Users (Doctor & Secretary)
   const defaultPasswordHash = await bcrypt.hash("ChangeMe123!", 12);
-
-  const doctorEmail = (process.env.SEED_DOCTOR_EMAIL || "doctor@example.com").trim().toLowerCase();
-  const doctor = await prisma.user.upsert({
-    where: { email: doctorEmail },
-    update: {
-      name: process.env.SEED_DOCTOR_NAME || "د. أحمد خليل - Dr. Ahmed Khalil",
-      role: Role.DOCTOR,
-      isActive: true
-    },
-    create: {
-      email: doctorEmail,
-      name: process.env.SEED_DOCTOR_NAME || "د. أحمد خليل - Dr. Ahmed Khalil",
-      passwordHash: defaultPasswordHash,
-      role: Role.DOCTOR,
-      isActive: true
-    }
-  });
+  const doctor = await seedDoctor();
 
   const secretaryEmail = (process.env.SEED_SECRETARY_EMAIL || "secretary@example.com").trim().toLowerCase();
   const secretary = await prisma.user.upsert({
