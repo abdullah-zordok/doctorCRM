@@ -15,3 +15,7 @@ _tmp_*
 *.swp
 .vscode/
 .idea/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-journal
