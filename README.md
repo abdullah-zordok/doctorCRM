@@ -7,10 +7,10 @@ steps, see [RUN_PROJECT.md](RUN_PROJECT.md).
 
 ## Spec 001: Core Backend Foundation
 
-The current implementation covers Dockerized backend startup, PostgreSQL,
-Prisma, the initial Doctor seed account, JWT authentication, Doctor/Secretary
-RBAC foundations, request validation, consistent JSON responses, global error
-handling, and readiness checks.
+The current implementation covers lightweight SQLite (`dev.db`) database,
+Prisma 6, LibSQL/Turso compatibility for Vercel, Doctor & Secretary
+RBAC foundations, rich clinical seed data, JWT authentication,
+request validation, consistent JSON responses, global error handling, and readiness checks.
 
 See the Spec 001 quickstart for full setup and verification steps:
 
@@ -45,11 +45,11 @@ Start the full local runtime:
 docker compose up --build
 ```
 
-Run migrations and seed the initial Doctor account inside the backend service:
+Push schema and seed the initial dataset inside the backend service:
 
 ```bash
-docker compose exec backend pnpm prisma migrate dev
-docker compose exec backend pnpm prisma db seed
+docker compose exec backend pnpm prisma db push
+docker compose exec backend pnpm seed
 ```
 
 The frontend app runs on <http://localhost:5173> and expects the backend API on

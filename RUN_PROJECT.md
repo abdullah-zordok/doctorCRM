@@ -2,21 +2,34 @@
 
 ## Requirements
 
-- Docker Desktop with the Linux/WSL 2 engine running
-- Docker Compose v2
-- Ports `5173`, `4000`, and `5432` available
+- Node.js 20+ & pnpm (Recommended for fast local development)
+- Optional: Docker Desktop & Docker Compose v2
+- Ports `5173` and `4000` available (Port `5432` is no longer needed as database uses SQLite)
 
-Node.js and pnpm are only required when running services without Docker.
+## First-Time Startup (Local SQLite)
 
-## First-Time Startup
+1. Backend:
+```bash
+cd backend
+pnpm install
+pnpm prisma generate
+pnpm prisma db push
+pnpm seed
+pnpm dev
+```
 
-From the repository root:
+2. Frontend:
+```bash
+cd frontend
+pnpm install
+pnpm dev
+```
 
+3. Or via Docker Compose:
 ```powershell
-docker info
 docker compose up --build -d
-docker compose exec backend pnpm prisma migrate dev
-docker compose exec backend pnpm prisma db seed
+docker compose exec backend pnpm prisma db push
+docker compose exec backend pnpm seed
 ```
 
 Open:
@@ -24,14 +37,18 @@ Open:
 - Frontend: <http://localhost:5173>
 - Backend readiness: <http://localhost:4000/api/health>
 
-Default Doctor account:
+Pre-seeded Accounts:
 
-```text
-Email: doctor@example.com
-Password: ChangeMe123!
-```
+- **Doctor**: `doctor@example.com` / `ChangeMe123!`
+- **Secretary**: `secretary@example.com` / `ChangeMe123!`
 
-Change the default password and JWT secret before using the project outside local development.
+### Vercel Serverless Hosting (with Turso SQLite)
+To deploy backend to Vercel without data loss:
+1. Create a free database at [turso.tech](https://turso.tech).
+2. Set environment variables in Vercel:
+   - `TURSO_DATABASE_URL=libsql://your-db.turso.io`
+   - `TURSO_AUTH_TOKEN=your_token`
+   - `JWT_SECRET=your_production_secret`
 
 ## Normal Startup
 
