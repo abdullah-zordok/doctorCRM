@@ -33,8 +33,8 @@ export class PatientsService {
       ...(query.search
         ? {
             OR: [
-              { name: { contains: query.search, mode: "insensitive" } },
-              { phone: { contains: query.search, mode: "insensitive" } }
+              { name: { contains: query.search } },
+              { phone: { contains: query.search } }
             ]
           }
         : {})
