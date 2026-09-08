@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -194,9 +194,9 @@ model Payment {
   visitId          String?
   clinicId         String
   receivedByUserId String
-  totalAmount      Decimal           @db.Decimal(12, 2)
-  paidAmount       Decimal           @db.Decimal(12, 2)
-  remainingAmount  Decimal           @db.Decimal(12, 2)
+  totalAmount      Decimal
+  paidAmount       Decimal
+  remainingAmount  Decimal
   method           PaymentMethod
   paidAt           DateTime
   notes            String?
@@ -219,9 +219,9 @@ model PaymentRevision {
   id              String        @id @default(cuid())
   paymentId       String
   changedByUserId String
-  totalAmount     Decimal       @db.Decimal(12, 2)
-  paidAmount      Decimal       @db.Decimal(12, 2)
-  remainingAmount Decimal       @db.Decimal(12, 2)
+  totalAmount     Decimal
+  paidAmount      Decimal
+  remainingAmount Decimal
   method          PaymentMethod
   reason          String
   createdAt       DateTime      @default(now())
