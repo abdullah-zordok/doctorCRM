@@ -1,6 +1,6 @@
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Activity, ArrowRight, CalendarCheck2, CheckCircle2, HeartPulse, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
+import { Activity, AlertTriangle, ArrowRight, CalendarCheck2, CheckCircle2, HeartPulse, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -35,8 +35,8 @@ export function LoginPage() {
   const form = useForm<LoginForm>({
     resolver: zodResolver(schema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "doctor@example.com",
+      password: "ChangeMe123!",
       remember: true
     }
   });
@@ -115,6 +115,43 @@ export function LoginPage() {
             </CardHeader>
             <CardContent>
               <form className="space-y-5" onSubmit={onSubmit}>
+                {/* Quick Demo Credentials Switcher */}
+                <div className="rounded-xl border border-primary/20 bg-primary/5 p-2.5">
+                  <p className="text-[11px] font-semibold text-primary mb-1.5 px-0.5">
+                    حسابات التجربة السريعة | Quick Demo Credentials:
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        form.setValue("email", "doctor@example.com", { shouldValidate: true });
+                        form.setValue("password", "ChangeMe123!", { shouldValidate: true });
+                      }}
+                      className={`flex items-center justify-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-semibold transition-all ${
+                        form.watch("email") === "doctor@example.com"
+                          ? "border-primary bg-primary text-primary-foreground shadow-xs"
+                          : "border-border/80 bg-white/80 hover:bg-white text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      👨‍⚕️ دكتور (Doctor)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        form.setValue("email", "secretary@example.com", { shouldValidate: true });
+                        form.setValue("password", "ChangeMe123!", { shouldValidate: true });
+                      }}
+                      className={`flex items-center justify-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-semibold transition-all ${
+                        form.watch("email") === "secretary@example.com"
+                          ? "border-primary bg-primary text-primary-foreground shadow-xs"
+                          : "border-border/80 bg-white/80 hover:bg-white text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      👩‍💼 سكرتارية (Secretary)
+                    </button>
+                  </div>
+                </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="email">{t("auth.email")}</Label>
                   <div className="relative">
@@ -147,6 +184,26 @@ export function LoginPage() {
                   {form.formState.isSubmitting ? t("auth.signingIn") : t("auth.signIn")}
                   <ArrowRight className="icon-directional h-4 w-4" aria-hidden="true" />
                 </Button>
+
+                {/* Demo Notice Alert */}
+                <div className="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-start shadow-sm backdrop-blur">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-amber-500/20 text-amber-700 dark:text-amber-300">
+                      <AlertTriangle className="h-5 w-5" aria-hidden="true" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-200">
+                        ⚠️ تنبيه تجريبي | Demo Notice
+                      </p>
+                      <p className="text-sm font-bold text-amber-950 dark:text-amber-100 leading-snug">
+                        هذا المشروع demo من المشروع الأصلي، هذا المشروع demo فقط للتجربة.
+                      </p>
+                      <p className="text-xs font-medium text-amber-800/90 dark:text-amber-300/90 leading-snug" dir="ltr">
+                        This project is a demo of the original project, this project is a demo for testing only.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </form>
 
               <div className="mt-6 flex items-center gap-2 rounded-2xl bg-muted/70 px-4 py-3 text-xs text-muted-foreground">
