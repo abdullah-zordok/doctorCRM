@@ -1,0 +1,14 @@
+{
+  "buildCommand": "cd backend && pnpm prisma generate && cd ../frontend && pnpm build",
+  "outputDirectory": "frontend/dist",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
