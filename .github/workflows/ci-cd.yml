@@ -1,0 +1,115 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - 006-ui-kit-implementation
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  backend-checks:
+    name: Backend CI (Typecheck, Lint, Tests, Build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.7.0
+
+      - name: Install Backend Dependencies
+        run: pnpm install --config.confirmModulesPurge=false
+
+      - name: Approve Pnpm Builds
+        run: pnpm approve-builds --all
+
+      - name: Generate Prisma Client
+        run: pnpm prisma generate
+
+      - name: TypeScript Check
+        run: pnpm typecheck
+
+      - name: ESLint Check
+        run: pnpm lint
+
+      - name: Initialize SQLite Schema
+        run: pnpm prisma db push
+        env:
+          DATABASE_URL: "file:./dev.db"
+
+      - name: Seed Clinical Fake Data
+        run: pnpm seed
+        env:
+          DATABASE_URL: "file:./dev.db"
+          JWT_SECRET: "ci_cd_test_secret_key_12345"
+
+      - name: Run Backend Tests
+        run: pnpm test
+        env:
+          DATABASE_URL: "file:./dev.db"
+          JWT_SECRET: "ci_cd_test_secret_key_12345"
+
+      - name: Build Backend
+        run: pnpm build
+
+  frontend-checks:
+    name: Frontend CI (Typecheck, Lint, Build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.7.0
+
+      - name: Install Frontend Dependencies
+        run: pnpm install --config.confirmModulesPurge=false
+
+      - name: Approve Pnpm Builds
+        run: pnpm approve-builds --all
+
+      - name: TypeScript Check
+        run: pnpm typecheck
+
+      - name: ESLint Check
+        run: pnpm lint
+
+      - name: Production Build
+        run: pnpm build
+
+  deploy-info:
+    name: Deployment Readiness
+    needs: [backend-checks, frontend-checks]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deployment Instructions
+        run: |
+          echo "All checks passed! Project is ready for Vercel deployment."
+          echo "Frontend & Backend vercel.json configurations are active."
