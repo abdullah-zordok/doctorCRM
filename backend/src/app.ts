@@ -35,6 +35,15 @@ export function createApp() {
   app.use("/api/payments", paymentsRouter);
   app.use("/api/dashboard", dashboardRouter);
 
+  app.get("/", (_req, res) => {
+    res.json({
+      status: "ok",
+      service: "Doctor CRM Backend API",
+      version: "1.0.0",
+      docs: "/api/health"
+    });
+  });
+
   app.use(notFoundHandler);
   app.use(errorHandler);
 
@@ -42,3 +51,4 @@ export function createApp() {
 }
 
 export const app = createApp();
+export default app;

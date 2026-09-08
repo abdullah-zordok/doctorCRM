@@ -21,19 +21,27 @@ function setupDatabaseUrl(): string {
     if (!fs.existsSync(dest)) {
       const candidates = [
         path.join(process.cwd(), "prisma/dev.db"),
+        path.join(__dirname, "../prisma/dev.db"),
+        path.join(__dirname, "prisma/dev.db"),
         path.join(process.cwd(), "backend/prisma/dev.db"),
-        path.join(__dirname, "../../../prisma/dev.db"),
-        path.join(__dirname, "../../prisma/dev.db")
+        path.join(__dirname, "../../prisma/dev.db"),
+        path.join(__dirname, "../../../prisma/dev.db")
       ];
+      let copied = false;
       for (const candidate of candidates) {
         if (fs.existsSync(candidate)) {
           try {
             fs.copyFileSync(candidate, dest);
+            console.log("[DB] Copied SQLite database from", candidate, "to", dest);
+            copied = true;
             break;
-          } catch {
-            // Ignore copy failure and fallback
+          } catch (err) {
+            console.error("[DB] Failed to copy SQLite database from", candidate, err);
           }
         }
+      }
+      if (!copied) {
+        console.warn("[DB] No candidate SQLite file found at:", candidates);
       }
     }
     return "file:/tmp/dev.db";
